@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruta hacia la carta 💌</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #fff0f5;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #333;
+  }
+  h1 { margin-top: 20px; color: #e91e63; }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  button {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover { background: #ff85c1; }
+  .hidden { display: none; }
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    cursor: pointer;
+    animation: float 4s linear forwards;
+  }
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-300px); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>💌 Ruta hacia la carta</h1>
+
+<div id="game1" class="card">
+  <h2>Juego 1: Quiz de recuerdos</h2>
+  <form id="quizForm">
+    <p>¿Cuál fue nuestro primer plan juntos?</p>
+    <label><input type="radio" name="q1" value="cine"> Cine</label><br>
+    <label><input type="radio" name="q1" value="cafe"> Café</label><br>
+    <label><input type="radio" name="q1" value="parque"> Parque</label><br>
+
+    <p>¿Qué color te recuerda a mí?</p>
+    <label><input type="radio" name="q2" value="azul"> Azul</label><br>
+    <label><input type="radio" name="q2" value="rosa"> Rosa</label><br>
+    <label><input type="radio" name="q2" value="verde"> Verde</label><br>
+
+    <p>¿Cuál es nuestro lugar favorito?</p>
+    <label><input type="radio" name="q3" value="playa"> Playa</label><br>
+    <label><input type="radio" name="q3" value="cerro"> Cerro</label><br>
+    <label><input type="radio" name="q3" value="casa"> Casa</label><br>
+
+    <button type="button" onclick="checkQuiz()">Enviar respuestas</button>
+  </form>
+  <p id="quizResult"></p>
+</div>
+
+<div id="game2" class="card hidden">
+  <h2>Juego 2: Atrapa corazones ❤️</h2>
+  <p>Haz clic en 7 corazones para avanzar.</p>
+  <div id="catchArea" style="position:relative;height:300px;background:#ffe4ec;border-radius:12px;"></div>
+  <p>Corazones atrapados: <span id="caughtCount">0</span>/7</p>
+</div>
+
+<div id="game3" class="card hidden">
+  <h2>Juego 3: Adivinanza</h2>
+  <p>Pista: Es la fuerza que hace que todo valga la pena</p>
+  <input id="riddleInput" placeholder="Tu respuesta...">
+  <button onclick="checkRiddle()">Responder</button>
+  <p id="riddleResult"></p>
+</div>
+
+<div id="letter" class="card hidden">
+  <h2>💌 Carta desbloqueada 💌</h2>
+  <p>Gracias por jugar y llegar hasta aquí.<br>
+  Cada corazón atrapado es un recuerdo.<br>
+  Hoy te dejo esta carta, simple y sincera:<br>
+  Me importas, me inspiras y me haces querer ser mejor.<br><br>
+  Con cariño,<br><strong>Scarlett</strong></p>
+</div>
+
+<script>
+function checkQuiz() {
+  const correct = {q1:"parque", q2:"rosa", q3:"casa"};
+  let score = 0;
+  for (let q in correct) {
+    const val = document.querySelector(`input[name="${q}"]:checked`);
+    if (val && val.value === correct[q]) score++;
+  }
+  if (score === 3) {
+    document.getElementById("quizResult").textContent = "✅ ¡Perfecto! Pasas al Juego 2.";
+    document.getElementById("game2").classList.remove("hidden");
+    startCatch();
+  } else {
+    document.getElementById("quizResult").textContent = "❌ Fallaste. Intenta de nuevo.";
+  }
+}
+
+let caught = 0;
+function startCatch() {
+  const area = document.getElementById("catchArea");
+  setInterval(() => {
+    if (caught >= 7) return;
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "❤️";
+    heart.style.left = Math.random()*350+"px";
+    heart.style.top = "250px";
+    heart.onclick = () => {
+      caught++;
+      document.getElementById("caughtCount").textContent = caught;
+      heart.remove();
+      if (caught >= 7) {
+        document.getElementById("game3").classList.remove("hidden");
+      }
+    };
+    area.appendChild(heart);
+    setTimeout(()=>heart.remove(),4000);
+  }, 800);
+}
+
+function checkRiddle() {
+  const val = document.getElementById("riddleInput").value.toLowerCase();
+  if (val === "amor") {
+    document.getElementById("riddleResult").textContent = "✅ Correcto. Carta desbloqueada.";
+    document.getElementById("letter").classList.remove("hidden");
+  } else {
+    document.getElementById("riddleResult").textContent = "❌ No es correcto. Pista: AMOR.";
+  }
+}
+</script>
+
+</body>
+</html>
