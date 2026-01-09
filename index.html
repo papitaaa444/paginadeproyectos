@@ -130,10 +130,10 @@
         Quizá te demuestro muy poco y quizá esto no sea nada o, si lo es, no sea suficiente. No es que no quiera expresar o mostrar todo lo que siento.
         Realmente, hay muchas cosas que siento y que quisiera expresar, pero creo que de verdad me quedo corta, jajaja, irónico ¿cierto?
         Haciendo esto cayeron varias de mis lágrimas, no lo voy a negar. Muchas cosas me asustan y, entre esas, que me destrocen, porque una vez ya llegué a eso[cite: 22, 23].
-        Al menos, si llego a caer ahí otra vez, que no sea por ti, por favor. Quiero algo bonito e igual siento que quizá si no funciona pueda ser porque soy yo el problema.
+        Al menos, si llego a caer ahí otra vez, que no sea por ti, por favor. Quiero algo bonito e igual siento que quizá si no funciona pueda ser porque soy yo el problema[cite: 23].
         Siendo así, te pido disculpas, quizá por el miedo a llorar me limité a ciertas cosas. Bueno, pero quiero que sepas que hay muchos sentimientos,
         muchas emociones que me haces sentir. Me haces feliz y quiero poder hacerte igual de feliz. Gracias por estar y por aguantarme[cite: 24].
-        Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor.
+        Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor[cite: 24].
         ¡Muakkkk! [cite: 25]
       </div>
       <button class="btn btn-primario" style="margin-top:14px;" onclick="finalizarCarta()">Finalizar con un abrazo virtual 🤗</button>
@@ -142,7 +142,7 @@
 </section>
 
 <script>
-// Navegación
+// Navegación corregida [cite: 26, 27]
 function mostrar(id){
   document.querySelectorAll('.pantalla').forEach(p=>p.style.display='none');
   const el = document.getElementById(id);
@@ -150,7 +150,7 @@ function mostrar(id){
   const focusInput = el.querySelector('input'); if (focusInput) focusInput.focus();
 }
 
-// Juego 1: avanzar rondas
+// Juego 1: avanzar rondas [cite: 27, 28]
 function pasarRonda(n){
   if(n===1){
     document.getElementById("ronda1").style.display="none";
@@ -159,12 +159,10 @@ function pasarRonda(n){
   if(n===2){
     document.getElementById("ronda2").style.display="none";
     document.getElementById("ronda3").style.display="block";
-    // Iniciamos la ronda 3 manualmente para evitar el bucle del Observer
-    if(puntos === 0) { arr=[]; drawR3(); spawnR3(); }
   }
 }
 
-// Corazones interactivos (Ronda 1 y 2)
+// Corazones interactivos (Ronda 1 y 2) [cite: 29, 30, 31, 32]
 const c1 = document.getElementById("canvasR1"), ctx1 = c1.getContext("2d");
 const c2 = document.getElementById("canvasR2"), ctx2 = c2.getContext("2d");
 let heart1={x:300,y:140,emoji:"❤️"}, heart2={x:300,y:140,emoji:"💜"};
@@ -187,7 +185,7 @@ c2.addEventListener("mousemove",(e)=>{
 });
 drawR1(); drawR2();
 
-// Ronda 3: Lógica corregida
+// Ronda 3: lógica preservada [cite: 33, 34, 35]
 const c3 = document.getElementById("canvasCorazones"), ctx3 = c3.getContext("2d");
 let puntos=0, arr=[], spawnTimeout=null;
 function drawR3(){ ctx3.clearRect(0,0,c3.width,c3.height); ctx3.font="36px Arial"; arr.forEach(c=>ctx3.fillText(c.t,c.x,c.y)); }
@@ -215,13 +213,21 @@ c3.addEventListener("click",(e)=>{
   }
 });
 
-// Juego 2: Colores (Texto original preservado)
+// Iniciador de Ronda 3 [cite: 36, 37]
+const obsJ1 = new MutationObserver(()=>{
+  if(document.getElementById("ronda3").style.display==="block"){
+    if(puntos === 0) { arr=[]; drawR3(); spawnR3(); }
+  }
+});
+obsJ1.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
+
+// Juego 2: Colores (con botón troll) [cite: 37, 38, 39, 40, 41, 42]
 (function(){
   const intentosLbl = document.getElementById("intentos");
   const opcionesDiv = document.getElementById("opciones");
   const msg = document.getElementById("mensaje");
   let intentos = 3;
-  const trollMsgs = ["¿Azul como el mar? No creo... 🌊", "El rojo es lindo, pero ¿es ese? ❤️", "Verde esperanza... pero esperanza de ganar 🌿" [cite: 37]];
+  const trollMsgs = ["¿Azul como el mar? No creo... 🌊", "El rojo es lindo, pero ¿es ese? ❤️", "Verde esperanza... pero esperanza de ganar 🌿"];
   const opciones = [{n:"Azul", c:"#ADD8E6"}, {n:"Rojo", c:"#FFB2B2"}, {n:"Verde", c:"#C2F0C2"}, {n:"Amarillo", c:"#FFFFE0"}];
   
   opcionesDiv.innerHTML = opciones.map(o => `<button class="btn" style="background:${o.c}; width:120px;" onclick="verificarColor('${o.n}')">${o.n}</button>`).join("");
@@ -243,9 +249,9 @@ c3.addEventListener("click",(e)=>{
   };
 })();
 
-// Juego 3: Principito (Completo)
+// Juego 3: Principito [cite: 43, 44, 45, 46, 47, 48]
 (function(){
-  const frases = [{texto:"Lo esencial es invisible...", correcta:"a los ojos", opciones:["al corazón","a la mente","al alma"]}, {texto:"Fue el tiempo que pasaste con tu...", correcta:"rosa", opciones:["planeta","zorro","orgullo"]}, {texto:"Si vienes, por ejemplo, a las cuatro de la tarde...", correcta:"feliz", opciones:["puntual","inquieto","amigo"]}, {texto:"Todas las personas mayores fueron al principio...", correcta:"niños", opciones:["sabios","pequeños","soñadores"]} [cite: 43]];
+  const frases = [{texto:"Lo esencial es invisible...", correcta:"a los ojos", opciones:["al corazón","a la mente","al alma"]}, {texto:"Fue el tiempo que pasaste con tu...", correcta:"rosa", opciones:["planeta","zorro","orgullo"]}, {texto:"Si vienes, por ejemplo, a las cuatro de la tarde...", correcta:"feliz", opciones:["puntual","inquieto","amigo"]}, {texto:"Todas las personas mayores fueron al principio...", correcta:"niños", opciones:["sabios","pequeños","soñadores"]}];
   let idx = 0;
   function render(){
     if(idx>=frases.length){
@@ -255,14 +261,13 @@ c3.addEventListener("click",(e)=>{
     const f = frases[idx]; document.getElementById("frase").innerText = `"${f.texto}"`;
     const all = [...f.opciones, f.correcta].sort(()=>Math.random()-0.5);
     document.getElementById("opcionesPrincipito").innerHTML = all.map(o => `<button class="btn" style="background:#1c2541; color:white;" onclick="verificarPrincipito('${o}')">${o}</button>`).join(" ");
-    document.getElementById("estado").innerText = "";
   }
-  window.verificarPrincipito = (o)=>{ if(o===frases[idx].correcta){ document.getElementById("estado").innerText="✅ Correcto"; idx++; setTimeout(render,450); } else { document.getElementById("estado").innerText="❌ Intenta de nuevo"; } };
+  window.verificarPrincipito = (o)=>{ if(o===frases[idx].correcta){ idx++; render(); } else { document.getElementById("estado").innerText="❌ Intenta de nuevo"; } };
   const obs = new MutationObserver(()=>{ if(document.getElementById("juego3").style.display==="block") render(); });
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
-// Juego 4: Esquiva
+// Juego 4: Esquiva [cite: 49, 50, 51, 52, 53, 54, 55, 56, 57]
 (function(){
   const canvas = document.getElementById("canvasEsquiva"); const ctx = canvas.getContext("2d"); const energiaLbl = document.getElementById("energia");
   const corazon = {x:300,y:350}; let obstaculos = [], rayos = [], puntos = 0, jugando = true;
@@ -279,16 +284,15 @@ c3.addEventListener("click",(e)=>{
     obstaculos.forEach(o=>{ ctx.font="35px Arial"; ctx.fillText(o.tipo,o.x,o.y); o.x+=o.vx; o.y+=o.vy; if(Math.abs(corazon.x-o.x)<35 && Math.abs(corazon.y-o.y)<35) puntos=Math.max(0,puntos-6); });
     obstaculos = obstaculos.filter(o=>o.y<500);
     rayos.forEach(r=>{ ctx.font="30px Arial"; ctx.fillStyle="#ffd60a"; ctx.fillText("⚡",r.x,r.y); ctx.fillStyle="black"; r.x+=15; if(Math.abs(corazon.x-r.x)<30 && Math.abs(corazon.y-r.y)<30) puntos=Math.max(0,puntos-15); });
-    rayos = rayos.filter(r=>r.x<650); puntos+=0.45; const energia = Math.min(100,puntos);
-    energiaLbl.innerText = `Energía del Amor: ${Math.floor(energia)}%`;
-    if(energia>=100){ jugando=false; document.getElementById("juego4").innerHTML = `<h2 style="color:#00d4ff">¡CIELO DESPEJADO! ✨</h2><button class="btn btn-azul" onclick="mostrar('juego5')">SIGUIENTE RETO ➔</button>`; }
+    puntos+=0.45; const energia = Math.min(100,puntos); energiaLbl.innerText = `Energía del Amor: ${Math.floor(energia)}%`;
+    if(energia>=100){ jugando=false; document.getElementById("juego4").innerHTML = `<h2>¡CIELO DESPEJADO! ✨</h2><button class="btn btn-azul" onclick="mostrar('juego5')">SIGUIENTE RETO ➔</button>`; }
     else { requestAnimationFrame(frame); }
   }
   const obs = new MutationObserver(()=>{ if(document.getElementById("juego4").style.display==="block"){ obstaculos=[]; rayos=[]; puntos=0; jugando=true; clima(); frame(); } });
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
-// Juego 5: Laberinto
+// Juego 5: Laberinto [cite: 57, 58, 59, 60, 61, 62, 63, 64]
 (function(){
   const canvas = document.getElementById("canvasLaberinto"); const ctx = canvas.getContext("2d"); const vidasLbl = document.getElementById("vidas");
   let jugador={x:30,y:40}, vidas=3, jugando=true; const meta={x:530,y:340,w:50,h:50};
@@ -308,7 +312,7 @@ c3.addEventListener("click",(e)=>{
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
-// Juego 6: Jardín (Tulipanes completos)
+// Juego 6: Jardín (Tulipanes completos) [cite: 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
 (function(){
   const canvas = document.getElementById("canvasJardin"); const ctx = canvas.getContext("2d"); const paleta=["#FFB6C1","#DB7093","#FF69B4","#FF1493","#FFC0CB"];
   function drawTulip(x,y,scale=1){
@@ -329,11 +333,11 @@ c3.addEventListener("click",(e)=>{
   }
   const petals=[]; function spawnPetal(){ petals.push({x:Math.random()*800, y:-20, size:12+Math.random()*10, vy:1.8+Math.random()*1.4, vx:(Math.random()*0.8-0.4)}); }
   function loop(){ escena(); petals.forEach(p=>{ ctx.font = `${p.size}px Arial`; ctx.fillText("🌸", p.x, p.y); p.y += p.vy; p.x += p.vx; }); for(let i=petals.length-1;i>=0;i--) if(petals[i].y>660) petals.splice(i,1); requestAnimationFrame(loop); }
-  const obs = new MutationObserver(()=>{ if(document.getElementById("juego6").style.display==="block"){ petals.length=0; if(!window._petalInterval) window._petalInterval = setInterval(spawnPetal, 500); loop(); } });
+  const obs = new MutationObserver(()=>{ if(document.getElementById("juego6").style.display==="block"){ if(!window._petalInterval) window._petalInterval = setInterval(spawnPetal, 500); loop(); } });
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
-// Juegos Musicales (7, 8, 9, 10) preservados tal cual
+// Trivia [cite: 75, 76, 77]
 (function(){
   const preguntas = [{p:"¿Quién es el 'Rey del Pop'?", c:"Michael Jackson", o:["Elvis Presley","Michael Jackson","Prince","Bruno Mars"]}, {p:"¿Género de 'Bohemian Rhapsody'?", c:"Rock", o:["Pop","Jazz","Rock","Ópera"]}, {p:"¿'El Sol de México'?", c:"Luis Miguel", o:["Alejandro Fernández","Luis Miguel","Chayanne","Cristian Castro"]}]; let idx=0;
   function render(){
@@ -345,6 +349,7 @@ c3.addEventListener("click",(e)=>{
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
+// Completar letra [cite: 78, 79, 80, 81, 82, 83]
 (function(){
   const retos = [{t:"Luis Miguel", l:"Si tú me hubieras dicho siempre la verdad...", c:"si hubieras respondido cuando te llamé", o:["si no te hubieras ido de mi lado","si hubieras respondido cuando te llamé","si me hubieras amado un poco más"]}, {t:"Coldplay", l:"Look at the stars...", c:"you", o:["us","me","you"]}]; let idx=0;
   function render(){
@@ -356,6 +361,7 @@ c3.addEventListener("click",(e)=>{
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
+// Adivina Artista [cite: 84, 85, 86]
 (function(){
   const retos = [{emoji:"☀️ 🇲🇽 🎙️", c:"Luis Miguel"}, {emoji:"🌙 🎤 👱🏻‍♀️ 💅", c:"Ariana Grande"}, {emoji:"🎸 🎩 🔫 🌹", c:"Guns N' Roses"}]; let idx=0;
   function render(){
@@ -367,6 +373,7 @@ c3.addEventListener("click",(e)=>{
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
+// Fuegos Artificiales [cite: 87, 88, 89, 90]
 (function(){
   const canvas = document.getElementById("canvasFuegos"); const ctx = canvas.getContext("2d"); let partes=[];
   function lanzar(){
@@ -383,30 +390,23 @@ c3.addEventListener("click",(e)=>{
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 
-// Carta Final: Corregido error crítico de sintaxis for 
+// Carta Final (CORRECCIÓN CRÍTICA DE SINTAXIS) [cite: 91, 92, 93, 94, 95]
 (function(){
   const canvas = document.getElementById("canvasCarta"); const ctx = canvas.getContext("2d");
   let hearts=[], ticker, spawnInt;
   function newHeart(){ hearts.push({x:Math.random()*canvas.width, y:canvas.height+20, size:18+Math.random()*12, vx:(Math.random()*1-0.5), vy:-(1.2+Math.random()*1.8), col:["#FFB6C1","#FFC0CB","#DB7093"][(Math.random()*3)|0]}); }
   function loop(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    for(let i=0;i<hearts.length-1;i++){ const c=hearts[i]; c.x+=c.vx; c.y+=c.vy; ctx.font=`${c.size}px Arial`; ctx.fillStyle=c.col; ctx.fillText("💗",c.x,c.y); if(c.y<-40) hearts.splice(i,1); }
+    hearts.forEach((c,i)=>{ c.x+=c.vx; c.y+=c.vy; ctx.font=`${c.size}px Arial`; ctx.fillStyle=c.col; ctx.fillText("💗",c.x,c.y); if(c.y<-40) hearts.splice(i,1); });
     ticker = requestAnimationFrame(loop);
   }
-  function start(){ 
-    hearts=[]; 
-    // CORRECCIÓN: Error de sintaxis original corregido de for(let i=0;i<28)i++) a i++
-    for(let i=0;i<28;i++){ newHeart(); } 
-    loop(); 
-    spawnInt = setInterval(newHeart,1200); 
-  }
+  function start(){ hearts=[]; for(let i=0;i<28;i++){ newHeart(); } loop(); spawnInt = setInterval(newHeart,1200); }
   function stop(){ cancelAnimationFrame(ticker); clearInterval(spawnInt); }
-  window.finalizarCarta = ()=>{ stop(); document.getElementById("cartaFinal").innerHTML = `<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background:#FFFAF0; color:#DB7093"><h2>Gracias por leer 💌</h2><p style="color:#BC8F8F">“Lo esencial es invisible a los ojos” ✨</p><button class="btn btn-rosa" onclick="location.reload()">Volver al inicio</button></div>`; };
+  window.finalizarCarta = ()=>{ stop(); document.getElementById("cartaFinal").innerHTML = `<h2>Gracias por leer 💌</h2><button class="btn btn-rosa" onclick="location.reload()">Volver</button>`; };
   const obs = new MutationObserver(()=>{ if(document.getElementById("cartaFinal").style.display==="block") start(); else stop(); });
   obs.observe(document.body,{attributes:true, subtree:true, attributeFilter:["style"]});
 })();
 </script>
 </body>
 </html>
-
 
