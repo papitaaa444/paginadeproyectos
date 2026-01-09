@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>🌸 Mi Juego Mágico 🌸</title>
+  <style>
+    body {
+      background-color: #FFF0F5;
+      font-family: Georgia, serif;
+      text-align: center;
+      color: #DB7093;
+    }
+    h1 {
+      margin-top: 40px;
+      font-size: 36px;
+    }
+    p {
+      font-size: 18px;
+      color: #8B5C7E;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #FF69B4;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+    a:hover {
+      background: #DB7093;
+    }
+    pre {
+      text-align: left;
+      background: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      max-width: 90%;
+      margin: 30px auto;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Bienvenida a mi rincón mágico ✨</h1>
+  <p>Este proyecto está hecho en <strong>Python con Tkinter</strong>.<br>
+     Para jugarlo, descárgalo y ejecútalo en tu computador.</p>
+
+  <a href="https://github.com/TU_USUARIO/TU_REPO/archive/refs/heads/main.zip">📥 Descargar Juego</a>
+
+  <h2 style="margin-top:50px;">🌸 Código Fuente 🌸</h2>
+  <pre><code>
+import tkinter as tk
+import random
+import math
+
+# ==========================================
+# 1. BIENVENIDA (ESTILO ELEGANTE)
+# ==========================================
+class PantallaBienvenida:
+    def __init__(self, container, avanzar_callback):
+        self.container = container
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(container, bg="#FFF0F5")
+        self.frame.pack(fill="both", expand=True)
+
+        self.canvas_decor = tk.Canvas(self.frame, bg="#FFF0F5", height=100, highlightthickness=0)
+        self.canvas_decor.pack(fill="x", side="top")
+        self.canvas_decor.create_text(400, 50, text="🌸 🌸 🌸 🌸 🌸 🌸 🌸", fill="#FFB6C1", font=("Arial", 20))
+
+        tk.Label(self.frame, text="Para mi persona favorita", 
+                 font=("Georgia", 30, "italic"), bg="#FFF0F5", fg="#DB7093").pack(pady=(50, 10))
+        
+        tk.Label(self.frame, text="He preparado este pequeño rincón para ti.\n¿Me permites mostrarte?", 
+                 font=("Verdana", 12), bg="#FFF0F5", fg="#BC8F8F").pack(pady=20)
+
+        self.btn = tk.Button(self.frame, text="Comenzar Viaje ✨", font=("Arial", 14, "bold"), 
+                  bg="#FFB6C1", fg="white", activebackground="#FF69B4", activeforeground="white",
+                  padx=40, pady=15, bd=0, cursor="hand2", command=self.avanzar_callback)
+        self.btn.pack(pady=30)
+        
+        self.btn.bind("<Enter>", lambda e: self.btn.config(bg="#FF69B4"))
+        self.btn.bind("<Leave>", lambda e: self.btn.config(bg="#FFB6C1"))
+
+# ==========================================
+# 2. JUEGO 1: ATRAPA CORAZONES (RONDAS)
+# ==========================================
+class AtrapaCorazonesRondas:
+    def __init__(self, root, avanzar_callback=None):
+        self.root = root.winfo_toplevel()
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#FFE4E1")
+        self.frame.pack(fill="both", expand=True)
+        self.correctos_atrapados = 0
+        self.time_left = 5
+        self.pantalla_inicio()
+
+    def limpiar(self):
+        for w in self.frame.winfo_children(): w.destroy()
+
+    def pantalla_inicio(self):
+        self.limpiar()
+        tk.Label(self.frame, text="💖 Primer Reto: Afecto", font=("Georgia", 24), bg="#FFE4E1", fg="#CD5C5C").pack(pady=20)
+        tk.Button(self.frame, text="¡Empezar!", font=("Arial", 12, "bold"), bg="#F08080", fg="white", 
+                  command=self.iniciar_ronda_1, bd=0, padx=30, pady=10).pack(pady=20)
+
+    def iniciar_ronda_1(self): self.ronda_juego("Ronda 1: Un besito ❤️", "❤️", self.iniciar_ronda_2)
+    def iniciar_ronda_2(self): self.ronda_juego("Ronda 2: Un abrazo 💜", "💜", self.iniciar_ronda_3)
+
+    def ronda_juego(self, titulo, emoji, siguiente):
+        self.limpiar()
+        tk.Label(self.frame, text=titulo, font=("Arial", 16), bg="#FFE4E1", fg="#8B4513").pack(pady=10)
+        self.canvas = tk.Canvas(self.frame, width=600, height=350, bg="white", highlightthickness=2, highlightbackground="#FFC0CB")
+        self.canvas.pack(pady=10)
+        heart = self.canvas.create_text(300, 175, text=emoji, font=("Arial", 50))
+        self.canvas.tag_bind(heart, "<Enter>", lambda e: self.mover_aleatorio(heart))
+        self.timer_label = tk.Label(self.frame, text="⏳ 5s", font=("Arial", 16, "bold"), bg="#FFE4E1", fg="#DB7093")
+        self.timer_label.pack()
+        self.time_left = 5
+        self.contador(siguiente)
+
+    def iniciar_ronda_3(self):
+        self.limpiar()
+        tk.Label(self.frame, text="Busca 5 corazones rosados 💗", font=("Arial", 16, "bold"), bg="#FFE4E1", fg="#DB7093").pack(pady=10)
+        self.canvas = tk.Canvas(self.frame, width=600, height=350, bg="white", highlightthickness=2, highlightbackground="#FFC0CB")
+        self.canvas.pack(pady=10)
+        self.msg = tk.Label(self.frame, text="Puntos: 0/5", font=("Arial", 14), bg="#FFE4E1")
+        self.msg.pack()
+        self.correctos_atrapados = 0
+        self.lanzar_corazones(0)
+
+    def lanzar_corazones(self, count):
+        if count < 40 and self.correctos_atrapados < 5:
+            x, y = random.randint(50, 550), random.randint(50, 300)
+            tipo = random.choice(["❤️", "💜", "💗", "🌸", "✨"])
+            h = self.canvas.create_text(x, y, text=tipo, font=("Arial", 35))
+            self.canvas.tag_bind(h, "<Button-1>", lambda e, hi=h, t=tipo: self.atrapar(hi, t))
+            self.root.after(700, lambda: self.lanzar_corazones(count+1))
+
+    def atrapar(self, h_id, tipo):
+        if tipo == "💗":
+            self.canvas.delete(h_id)
+            self.correctos_atrapados += 1
+            self.msg.config(text=f"Puntos: {self.correctos_atrapados}/5")
+            if self.correctos_atrapados >= 5:
+                tk.Button(self.frame, text="Siguiente Desafío ➡️", bg="#FF69B4", fg="white", 
+                          font=("Arial", 12, "bold"), command=self.avanzar_callback, bd=0, padx=25, pady=10).pack(pady=10)
+
+    def mover_aleatorio(self, h_id):
+        self.canvas.coords(h_id, random.randint(50, 550), random.randint(50, 300))
+
+    def contador(self, callback):
+        if self.time_left > 0:
+            self.timer_label.config(text=f"⏳ {self.time_left}s")
+            self.time_left -= 1
+            self.root.after(1000, lambda: self.contador(callback))
+        else:
+            if callback: callback()
+
+# ==========================================
+# 3. JUEGO 2: COLORES (MEJORAS CON BOTÓN TROLL)
+# ==========================================
+class JuegoColores:
+    def __init__(self, root, avanzar_callback=None):
+        self.root = root
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#FFF0F5")
+        self.frame.pack(fill="both", expand=True)
+        self.intentos = 3
+        self.troll_msgs = [
+            "¿Azul como el mar? No creo... 🌊",
+            "El rojo es lindo, pero ¿es ese? ❤️",
+            "Verde esperanza... pero esperanza de ganar 🌿"
+        ]
+        self.iniciar()
+
+    def iniciar(self):
+        tk.Label(self.frame, text="🎨 Encuentra el color oculto", font=("Georgia", 22), bg="#FFF0F5", fg="#DB7093").pack(pady=30)
+        self.msg = tk.Label(self.frame, text=f"Te quedan {self.intentos} intentos", font=("Arial", 12), bg="#FFF0F5")
+        self.msg.pack()
+        
+        self.btn_f = tk.Frame(self.frame, bg="#FFF0F5")
+        self.btn_f.pack(pady=40)
+        opciones = [("Azul", "#ADD8E6"), ("Rojo", "#FFB2B2"), ("Verde", "#C2F0C2"), ("Amarillo", "#FFFFE0")]
+        for n, c in opciones:
+            b = tk.Button(self.btn_f, text=n, bg=c, width=12, font=("Arial", 10, "bold"), bd=1, relief="flat",
+                          command=lambda x=n: self.verificar(x))
+            b.pack(side="left", padx=15)
+            b.bind("<Enter>", lambda e, btn=b: btn.config(bg="white"))
+            b.bind("<Leave>", lambda e, btn=b, col=c: btn.config(bg=col))
+
+    def verificar(self, elegido):
+        self.intentos -= 1
+        if self.intentos > 0:
+            l = tk.Label(self.frame, text=random.choice(self.troll_msgs), bg="#FFF0F5", fg="#F08080", font=("Arial", 11, "italic"))
+            l.pack(pady=5)
+            self.root.after(1500, lambda: l.destroy())
+            self.msg.config(text=f"No... Intenta otra vez ({self.intentos})")
+        else:
+            self.btn_f.destroy()
+            self.msg.config(text="¡Se acabaron los intentos! 🤭", fg="red")
+            x_random = random.randint(100, 500)
+            y_random = random.randint(300, 500)
+            self.btn_troll = tk.Button(
+                self.frame,
+                text="Tap tap aquí, te equivocaste,\nera el color de fondo 🤡",
+                font=("Arial", 10, "bold"), bg="#FFB6C1", fg="black",
+                command=self.mostrar_revelacion_final
+            )
+            self.btn_troll.place(x=x_random, y=y_random)
+
+    def mostrar_revelacion_final(self):
+        for w in self.frame.winfo_children():
+            try:
+                w.destroy()
+            except:
+                pass
+        self.frame.config(bg="#FFC0CB")
+        tk.Label(self.frame, text="¡Era obvio! El color era ROSADO 💗", 
+                 font=("Georgia", 20, "bold"), bg="#FFC0CB", fg="white").pack(pady=100)
+        tk.Button(self.frame, text="Continuar ✨", bg="white", fg="#FF69B4", 
+                  command=self.avanzar_callback, bd=0, padx=30, pady=10).pack()
+
+# ==========================================
+# 4. JUEGO 3: VIAJE ESTELAR (PRINCIPITO) - MEJORADO
+# ==========================================
+class ViajeEstelarPrincipito:
+    def __init__(self, root, avanzar_callback=None):
+        self.root = root.winfo_toplevel()
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#0b132b")
+        self.frame.pack(fill="both", expand=True)
+        
+        self.datos_frases = [
+            ("Lo esencial es invisible...", "a los ojos", ["al corazón", "a la mente", "al alma"]),
+            ("Fue el tiempo que pasaste con tu...", "rosa", ["planeta", "zorro", "orgullo"]),
+            ("Si vienes, por ejemplo, a las cuatro de la tarde, desde las tres empezaré a ser...", "feliz", ["puntual", "inquieto", "amigo"]),
+            ("Todas las personas mayores fueron al principio...", "niños", ["sabios", "pequeños", "soñadores"])
+        ]
+        self.idx = 0
+        self.crear_estrellas()
+        self.mostrar()
+
+    def crear_estrellas(self):
+        self.canvas_bg = tk.Canvas(self.frame, bg="#0b132b", highlightthickness=0, height=150)
+        self.canvas_bg.pack(fill="x")
+        for _ in range(30):
+            x, y = random.randint(0, 800), random.randint(0, 150)
+            tam = random.randint(1, 3)
+            self.canvas_bg.create_oval(x, y, x+tam, y+tam, fill="white")
+
+    def limpiar_botones(self):
+        for w in list(self.frame.winfo_children()):
+            if isinstance(w, tk.Button) or (isinstance(w, tk.Label) and w != self.canvas_bg):
+                try:
+                    w.destroy()
+                except:
+                    pass
+
+    def mostrar(self):
+        self.limpiar_botones()
+        if self.idx >= len(self.datos_frases):
+            self.victoria_final()
+            return
+
+        tk.Label(self.frame, text=f"Desafío {self.idx + 1} de 4", font=("Arial", 10, "bold"), 
+                 bg="#0b132b", fg="#5bc0be").pack(pady=5)
+        
+        lbl_frase = tk.Label(self.frame, text=f'"{self.datos_frases[self.idx][0]}"', 
+                             font=("Georgia", 18, "italic"), bg="#0b132b", fg="white", 
+                             wraplength=500, justify="center")
+        lbl_frase.pack(pady=30)
+
+        correcta = self.datos_frases[self.idx][1]
+        opciones = self.datos_frases[self.idx][2] + [correcta]
+        random.shuffle(opciones)
+
+        for opt in opciones:
+            btn = tk.Button(self.frame, text=opt, font=("Verdana", 11), bg="#1c2541", fg="#ffffff",
+                            activebackground="#3a506b", activeforeground="white",
+                            width=30, pady=8, bd=0, cursor="hand2",
+                            command=lambda o=opt: self.verificar(o, correcta))
+            btn.pack(pady=8)
+            btn.bind("<Enter>", lambda e, b=btn: b.config(bg="#3a506b"))
+            btn.bind("<Leave>", lambda e, b=btn: b.config(bg="#1c2541"))
+
+    def verificar(self, elegida, correcta):
+        if elegida == correcta:
+            self.frame.config(bg="#1a3a3a")
+            self.root.after(100, lambda: self.frame.config(bg="#0b132b"))
+            self.idx += 1
+            self.root.after(200, self.mostrar)
+        else:
+            self.frame.config(bg="#4a1a1a")
+            self.root.after(100, lambda: self.frame.config(bg="#0b132b"))
+
+    def victoria_final(self):
+        tk.Label(self.frame, text="✨ ¡Sabias palabras! ✨", font=("Georgia", 24, "bold"), 
+                 bg="#0b132b", fg="#ffca3a").pack(pady=50)
+        tk.Button(self.frame, text="Continuar el viaje 🚀", font=("Arial", 14, "bold"), 
+                  bg="#ffca3a", fg="#0b132b", padx=30, pady=15, bd=0,
+                  command=self.avanzar_callback).pack(pady=20)
+
+# ==========================================
+# 5. JUEGO 8: ESQUIVA CELESTIAL (ULTRA DINÁMICO)
+# ==========================================
+class EsquivaPenasDinamico:
+    def __init__(self, root, avanzar_callback):
+        self.root = root.winfo_toplevel()
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#0d1b2a")
+        self.frame.pack(fill="both", expand=True)
+        
+        tk.Label(self.frame, text="✨ PROTEGE NUESTRO CIELO ✨", 
+                 font=("System", 18, "bold"), bg="#0d1b2a", fg="#00d4ff").pack(pady=10)
+        
+        self.canvas = tk.Canvas(self.frame, width=600, height=450, bg="#1b263b", highlightthickness=0)
+        self.canvas.pack()
+        
+        self.canvas.create_text(300, 420, text="ENERGÍA DEL AMOR", fill="#e0e1dd", font=("Arial", 10))
+        self.canvas.create_rectangle(150, 430, 450, 440, outline="#00d4ff")
+        self.progreso_bar = self.canvas.create_rectangle(150, 430, 150, 440, fill="#00d4ff", outline="")
+
+        self.corazon = self.canvas.create_text(300, 350, text="❤️", font=("Arial", 28))
+        self.obstaculos = []
+        self.rayos = []
+        self.jugando = True
+        self.puntos = 0
+        
+        self.canvas.bind("<Motion>", lambda e: self.canvas.coords(self.corazon, e.x, e.y))
+        self.generar_clima()
+        self.bucle_principal()
+
+    def generar_clima(self):
+        if self.jugando:
+            x = random.randint(20, 580)
+            tipo = random.choice(["☁️", "⛈️", "❄️"])
+            obj = self.canvas.create_text(x, -50, text=tipo, font=("Arial", random.randint(25, 45)))
+            self.obstaculos.append({"id": obj, "vy": random.uniform(6, 11), "vx": random.uniform(-4, 4)})
+            if random.random() < 0.3:
+                y_rayo = random.randint(50, 350)
+                r = self.canvas.create_text(-50, y_rayo, text="⚡", font=("Arial", 30), fill="#ffd60a")
+                self.rayos.append(r)
+            self.root.after(250, self.generar_clima)
+
+    def bucle_principal(self):
+        if not self.jugando: return
+        self.puntos += 0.35
+        prog_ancho = 150 + (min(self.puntos, 100) * 3)
+        self.canvas.coords(self.progreso_bar, 150, 430, prog_ancho, 440)
+
+        for obs in self.obstaculos[:]:
+            self.canvas.move(obs["id"], obs["vx"], obs["vy"])
+            pos_n = self.canvas.coords(obs["id"])
+            pos_c = self.canvas.coords(self.corazon)
+            if abs(pos_c[0]-pos_n[0]) < 35 and abs(pos_c[1]-pos_n[1]) < 35:
+                self.puntos = max(0, self.puntos - 5)
+                self.efecto_sacudida()
+            if pos_n[1] > 500:
+                self.canvas.delete(obs["id"])
+                try:
+                    self.obstaculos.remove(obs)
+                except:
+                    pass
+
+        for r in self.rayos[:]:
+            self.canvas.move(r, 15, 0)
+            pos_r = self.canvas.coords(r)
+            pos_c = self.canvas.coords(self.corazon)
+            if abs(pos_c[0]-pos_r[0]) < 30 and abs(pos_c[1]-pos_r[1]) < 30:
+                self.puntos = max(0, self.puntos - 15)
+                self.efecto_sacudida()
+            if pos_r[0] > 650:
+                self.canvas.delete(r)
+                try:
+                    self.rayos.remove(r)
+                except:
+                    pass
+
+        if self.puntos >= 100:
+            self.victoria()
+        else:
+            self.root.after(20, self.bucle_principal)
+
+    def efecto_sacudida(self):
+        self.canvas.config(bg="#3e1f47")
+        self.root.after(50, lambda: self.canvas.config(bg="#1b263b"))
+
+    def victoria(self):
+        self.jugando = False
+        self.canvas.create_text(300, 200, text="¡CIELO DESPEJADO! ✨", font=("Georgia", 25, "bold"), fill="#00d4ff")
+        tk.Button(self.frame, text="SIGUIENTE RETO ➔", command=self.avanzar_callback, 
+                  bg="#00d4ff", fg="black", font=("Arial", 12, "bold")).pack(pady=10)
+
+# ==========================================
+# 6. JUEGO 9: LABERINTO MÁGICO DINÁMICO
+# ==========================================
+class LaberintoDinamico:
+    def __init__(self, root, avanzar_callback):
+        self.root = root.winfo_toplevel()
+        self.avanzar_callback = avanzar_callback
+        self.vidas = 3
+        self.frame = tk.Frame(root, bg="#FFF5EE")
+        self.frame.pack(fill="both", expand=True)
+        
+        self.lbl_vidas = tk.Label(self.frame, text="Vidas: ❤️ ❤️ ❤️", font=("Arial", 18, "bold"), bg="#FFF5EE", fg="#FF1493")
+        self.lbl_vidas.pack(pady=10)
+        
+        self.canvas = tk.Canvas(self.frame, width=600, height=400, bg="#FFF0F5", highlightthickness=4, highlightbackground="#FFB6C1")
+        self.canvas.pack()
+        
+        self.muros_data = [
+            {"id": self.canvas.create_rectangle(0, 100, 450, 115, fill="#FF69B4", outline=""), "dir": 1},
+            {"id": self.canvas.create_rectangle(150, 200, 600, 215, fill="#FF69B4", outline=""), "dir": -1},
+            {"id": self.canvas.create_rectangle(0, 300, 450, 315, fill="#FF69B4", outline=""), "dir": 1}
+        ]
+        
+        self.obstaculos = [
+            {"id": self.canvas.create_text(300, 150, text="✨", font=("Arial", 25)), "vx": 8, "vy": 3},
+            {"id": self.canvas.create_text(300, 250, text="💫", font=("Arial", 25)), "vx": -8, "vy": -3}
+        ]
+        
+        self.meta = self.canvas.create_oval(530, 340, 580, 390, fill="#FF1493", outline="white", width=3)
+        self.jugador = self.canvas.create_text(30, 40, text="💖", font=("Arial", 22))
+        
+        self.jugando = True
+        self.canvas.bind("<Motion>", self.verificar)
+        self.animar_elementos()
+
+    def animar_elementos(self):
+        if self.jugando and self.frame.winfo_exists():
+            for m in self.muros_data:
+                coords = self.canvas.coords(m["id"])
+                nuevo_ancho = coords[2] + (2 * m["dir"])
+                if nuevo_ancho > 550 or nuevo_ancho < 350: m["dir"] *= -1
+                self.canvas.coords(m["id"], coords[0], coords[1], nuevo_ancho, coords[3])
+
+            for o in self.obstaculos:
+                self.canvas.move(o["id"], o["vx"], o["vy"])
+                p = self.canvas.coords(o["id"])
+                if p[0] > 580 or p[0] < 20: o["vx"] *= -1
+                if p[1] > 380 or p[1] < 20: o["vy"] *= -1
+            
+            self.root.after(30, self.animar_elementos)
+
+    def verificar(self, e):
+        if not self.jugando: return
+        self.canvas.coords(self.jugador, e.x, e.y)
+        
+        toco = False
+        for m in self.muros_data:
+            c = self.canvas.coords(m["id"])
+            if c[0] < e.x < c[2] and c[1] < e.y < c[3]: toco = True
+        for o in self.obstaculos:
+            p = self.canvas.coords(o["id"])
+            if abs(e.x - p[0]) < 25 and abs(e.y - p[1]) < 25: toco = True
+            
+        if toco: self.morir()
+        
+        m_c = self.canvas.coords(self.meta)
+        if m_c[0] < e.x < m_c[2] and m_c[1] < e.y < m_c[3]:
+            self.victoria()
+
+    def morir(self):
+        self.vidas -= 1
+        self.canvas.coords(self.jugador, 30, 40)
+        self.lbl_vidas.config(text="Vidas: " + "❤️ " * self.vidas)
+        if self.vidas <= 0:
+            self.vidas = 3
+            self.lbl_vidas.config(text="Vidas: ❤️ ❤️ ❤️")
+
+    def victoria(self):
+        self.jugando = False
+        self.canvas.create_text(300, 200, text="¡ERES INCREÍBLE! ❤️", font=("Arial", 22, "bold"), fill="#FF69B4")
+        tk.Button(self.frame, text="VER REGALO FINAL 🎁", command=self.avanzar_callback, bd=0, padx=20, pady=10,
+                  bg="#FF69B4", fg="white", font=("Arial", 12, "bold")).pack(pady=10)
+
+# ==========================================
+# 7. JARDÍN FINAL: TULIPANES ARTÍSTICOS (CON SIGUIENTE)
+# ==========================================
+class JardinFinal:
+    def __init__(self, container, avanzar_callback=None):
+        self.avanzar_callback = avanzar_callback
+        self.canvas = tk.Canvas(container, bg="#FFF9FB", highlightthickness=0, width=800, height=650)
+        self.canvas.pack(fill="both", expand=True)
+        self.colores = ["#FFB6C1", "#DB7093", "#FF69B4", "#FF1493", "#FFC0CB"]
+        self.dibujar_escena()
+
+        if self.avanzar_callback:
+            btn = tk.Button(self.canvas, text="Siguiente ➜", font=("Arial", 12, "bold"),
+                            bg="#FF69B4", fg="white", bd=0, padx=20, pady=8,
+                            command=self.avanzar_callback)
+            self.canvas.create_window(700, 560, window=btn)
+
+    def dibujar_tulipan(self, x, y):
+        color = random.choice(self.colores)
+        self.canvas.create_line(x+1, y, x+1, y+130, fill="#7FB07F", width=3)
+        self.canvas.create_line(x, y, x, y+130, fill="#8FBC8F", width=2)
+        self.canvas.create_polygon(x, y+70, x-30, y+45, x-5, y+40, fill="#A2D1A4", smooth=True)
+        self.canvas.create_polygon(x, y+90, x+30, y+65, x+5, y+60, fill="#98CC9A", smooth=True)
+        self.canvas.create_polygon(x-18, y, x-25, y-50, x+25, y-50, x+18, y, fill=color, outline="#D16587", smooth=True)
+        self.canvas.create_polygon(x-22, y, x-28, y-55, x-5, y-65, x, y-25, fill=color, outline="#D16587", smooth=True)
+        self.canvas.create_polygon(x+22, y, x+28, y-55, x+5, y-65, x, y-25, fill=color, outline="#D16587", smooth=True)
+        self.canvas.create_polygon(x-15, y+5, x-18, y-60, x, y-75, x+18, y-60, x+15, y+5, fill=color, outline="#D16587", smooth=True)
+
+    def dibujar_escena(self):
+        self.canvas.create_text(400, 80, text="Para mi lugar seguro...", font=("Georgia", 30, "bold"), fill="#DB7093")
+        self.canvas.create_text(400, 130, text="Eres lo más bonito de mi vida.", font=("Arial", 14, "italic"), fill="#BC8F8F")
+        for _ in range(25):
+            self.dibujar_tulipan(random.randint(50, 750), random.randint(350, 520))
+        self.lluvia_de_petalos()
+        self.animar_brillos()
+
+    def lluvia_de_petalos(self):
+        x = random.randint(0, 800)
+        p = self.canvas.create_text(x, -10, text="🌸", font=("Arial", random.randint(10, 15)), fill="#FFB6C1")
+        def caer(obj):
+            self.canvas.move(obj, random.randint(-1, 1), 2)
+            pos = self.canvas.coords(obj)
+            if pos and pos[1] < 600:
+                self.canvas.after(30, lambda: caer(obj))
+            else:
+                try:
+                    self.canvas.delete(obj)
+                except:
+                    pass
+        caer(p)
+        self.canvas.after(500, self.lluvia_de_petalos)
+
+    def animar_brillos(self):
+        x, y = random.randint(20, 780), random.randint(50, 550)
+        b = self.canvas.create_text(x, y, text="✨", fill="#FFD700", font=("Arial", 10))
+        self.canvas.after(400, lambda: [self.canvas.delete(b), self.animar_brillos()])
+
+# ==========================================
+# 8. TRIVIA MUSICAL (GÉNEROS Y ARTISTAS)
+# ==========================================
+class TriviaMusical:
+    def __init__(self, root, avanzar_callback):
+        self.root = root
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#121212") 
+        self.frame.pack(fill="both", expand=True)
+        
+        self.preguntas = [
+            {"p": "¿Quién es conocido como el 'Rey del Pop'?", "c": "Michael Jackson", "o": ["Elvis Presley", "Michael Jackson", "Prince", "Bruno Mars"]},
+            {"p": "¿A qué género pertenece la famosa canción 'Bohemian Rhapsody'?", "c": "Rock", "o": ["Pop", "Jazz", "Rock", "Ópera"]},
+            {"p": "¿A qué artista apodan cariñosamente como 'El Sol de México'?", "c": "Luis Miguel", "o": ["Alejandro Fernández", "Luis Miguel", "Chayanne", "Cristian Castro"]}
+        ]
+        self.idx = 0
+        self.mostrar()
+
+    def mostrar(self):
+        for w in self.frame.winfo_children(): w.destroy()
+        if self.idx >= len(self.preguntas):
+            self.avanzar_callback()
+            return
+
+        tk.Label(self.frame, text="🎵 Trivia Musical 🎵", font=("Arial", 20, "bold"), bg="#121212", fg="#1DB954").pack(pady=20)
+        tk.Label(self.frame, text=self.preguntas[self.idx]["p"], font=("Arial", 14), bg="#121212", fg="white", wraplength=500).pack(pady=20)
+
+        for opcion in self.preguntas[self.idx]["o"]:
+            tk.Button(self.frame, text=opcion, font=("Arial", 11), width=30, bg="#282828", fg="white",
+                      activebackground="#1DB954", command=lambda o=opcion: self.verificar(o)).pack(pady=5)
+
+    def verificar(self, elegida):
+        if elegida == self.preguntas[self.idx]["c"]:
+            self.idx += 1
+            self.mostrar()
+
+# ==========================================
+# 9. COMPLETAR LETRA (LUIS MIGUEL Y COLDPLAY)
+# ==========================================
+class CompletarLetra:
+    def __init__(self, root, avanzar_callback):
+        self.root = root
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#1a1a1a")
+        self.frame.pack(fill="both", expand=True)
+        
+        self.retos = [
+            {"t": "Ahora te puedes marchar - Luis Miguel", "l": "Si tú me hubieras dicho siempre la verdad...", "c": "si hubieras respondido cuando te llamé", "o": ["si no te hubieras ido de mi lado", "si hubieras respondido cuando te llamé", "si me hubieras amado un poco más"]},
+            {"t": "Yellow - Coldplay", "l": "Look at the stars, look how they shine for...", "c": "you", "o": ["us", "me", "you"]}
+        ]
+        self.idx = 0
+        self.mostrar()
+
+    def mostrar(self):
+        for w in self.frame.winfo_children(): w.destroy()
+        if self.idx >= len(self.retos):
+            self.avanzar_callback()
+            return
+
+        tk.Label(self.frame, text="🎤 Completa la letra 🎤", font=("Arial", 20, "bold"), bg="#1a1a1a", fg="#FF4B2B").pack(pady=20)
+        tk.Label(self.frame, text=self.retos[self.idx]["t"], font=("Arial", 12, "italic"), bg="#1a1a1a", fg="#cccccc").pack()
+        tk.Label(self.frame, text=self.retos[self.idx]["l"], font=("Arial", 15, "bold"), bg="#1a1a1a", fg="white", pady=20, wraplength=600).pack()
+
+        for opcion in self.retos[self.idx]["o"]:
+            tk.Button(self.frame, text=opcion, font=("Arial", 11), width=45, bg="#333333", fg="white",
+                      activebackground="#FF4B2B", command=lambda o=opcion: self.verificar(o)).pack(pady=5)
+
+    def verificar(self, elegida):
+        if elegida == self.retos[self.idx]["c"]:
+            self.idx += 1
+            self.mostrar()
+
+# ==========================================
+# 10. ADIVINA EL ARTISTA (EMOJIS)
+# ==========================================
+class AdivinaEmojiArtista:
+    def __init__(self, root, avanzar_callback):
+        self.root = root
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#ffffff")
+        self.frame.pack(fill="both", expand=True)
+        
+        self.retos = [
+            {"e": "☀️ 🇲🇽 🎙️", "c": "Luis Miguel"},
+            {"e": "🌙 🎤 👱🏻‍♀️ 💅", "c": "Ariana Grande"},
+            {"e": "🎸 🎩 🔫 🌹", "c": "Guns N' Roses"}
+        ]
+        self.idx = 0
+        self.mostrar()
+
+    def mostrar(self):
+        for w in self.frame.winfo_children(): w.destroy()
+        if self.idx >= len(self.retos):
+            if self.avanzar_callback:
+                self.avanzar_callback()
+            return
+
+        tk.Label(self.frame, text="🕵️ Adivina el Artista por Emojis", font=("Arial", 18, "bold"), bg="white", fg="#333").pack(pady=20)
+        tk.Label(self.frame, text=self.retos[self.idx]["e"], font=("Arial", 40), bg="white").pack(pady=30)
+        
+        self.entrada = tk.Entry(self.frame, font=("Arial", 14), justify="center", bd=2, relief="groove")
+        self.entrada.pack(pady=10)
+        self.entrada.focus_set()
+        self.entrada.bind("<Return>", lambda e: self.verificar())
+
+        tk.Button(self.frame, text="Comprobar", bg="#4CAF50", fg="white", font=("Arial", 12, "bold"),
+                  command=self.verificar, padx=20, pady=5).pack(pady=10)
+        self.error_lbl = tk.Label(self.frame, text="", bg="white", fg="red")
+        self.error_lbl.pack()
+
+    def verificar(self):
+        if self.entrada.get().lower().strip() == self.retos[self.idx]["c"].lower():
+            self.idx += 1
+            self.mostrar()
+        else:
+            self.error_lbl.config(text="¡Casi! Intenta de nuevo")
+
+# ==========================================
+# 12. PANTALLA DE FUEGOS ARTIFICIALES Y CANCIONES (CORREGIDA Y ESTABLE)
+# ==========================================
+class FuegosArtificialesCanciones:
+    def __init__(self, root, avanzar_callback):
+        self.root = root
+        self.avanzar_callback = avanzar_callback
+        self.frame = tk.Frame(root, bg="#000033")
+        self.frame.pack(fill="both", expand=True)
+        self.canvas = tk.Canvas(self.frame, bg="#000033", highlightthickness=0, width=800, height=650)
+        self.canvas.pack(fill="both", expand=True)
+
+        self.particulas = []
+        self.colores_fuego = ["#FFD700", "#FF4500", "#FF00FF", "#00FFFF", "#ADFF2F", "#FFFFFF"]
+
+        self.frame.after(100, self.dibujar_textos)
+        self.lanzar_fuego()
+        self.animar_fuegos_artificiales()
+
+    def dibujar_textos(self):
+        self.canvas.create_text(400, 70, text="🎉 ¡Felicidades! 🎉", font=("Georgia", 30, "bold"), fill="#FFFFFF")
+        
+        mensaje = "Estos pequeños retos eran para mostrarte 5 canciones que me recuerdan a ti:"
+        # Canvas usa 'width' para ajustar texto
+        self.canvas.create_text(400, 130, text=mensaje, font=("Arial", 14, "italic"), fill="#ADD8E6", width=700, justify="center")
+
+        canciones = [
+            "1. The Boy Is Mine - Ariana Grande",
+            "2. Lo Que Siento - Cuco",
+            "3. Te Amaré - Silvio Rodríguez",
+            "4. Obsesionado - Farruko (con Alexio La Bestia)",
+            "5. Die With A Smile - Lady Gaga y Bruno Mars"
+        ]
+        y_pos = 170
+        for cancion in canciones:
+            self.canvas.create_text(400, y_pos, text=cancion, font=("Arial", 12, "bold"), fill="#FFC0CB", anchor="center")
+            y_pos += 25
+        
+        btn_next = tk.Button(self.frame, text="Abrir Carta Especial 💌", font=("Arial", 14, "bold"),
+                             bg="#FFB6C1", fg="white", command=self.avanzar_callback, bd=0, padx=25, pady=12,
+                             activebackground="#FF69B4", activeforeground="white")
+        self.canvas.create_window(400, y_pos + 60, window=btn_next)
+
+    def animar_fuegos_artificiales(self):
+        try:
+            if random.random() < 0.35:
+                self.lanzar_fuego()
+            for p in self.particulas[:]:
+                self.canvas.move(p["id"], p["vx"], p["vy"])
+                p["vy"] += 0.2
+                p["vida"] -= 1
+                if p["vida"] <= 0:
+                    self.canvas.delete(p["id"])
+                    self.particulas.remove(p)
+                elif p["vida"] < 20:
+                    size = max(1, p["vida"] // 5)
+                    self.canvas.itemconfig(p["id"], font=("Arial", size))
+        except Exception:
+            pass
+        self.frame.after(30, self.animar_fuegos_artificiales)
+
+    def lanzar_fuego(self):
+        x = random.randint(100, 700)
+        y = random.randint(180, 420)
+        color = random.choice(self.colores_fuego)
+        for _ in range(random.randint(24, 42)):
+            angle = random.uniform(0, 2 * math.pi)
+            speed = random.uniform(2.5, 6.2)
+            vx = speed * math.cos(angle)
+            vy = speed * math.sin(angle)
+            p_id = self.canvas.create_text(x, y, text="•", fill=color, font=("Arial", random.randint(8, 12)))
+            self.particulas.append({"id": p_id, "vx": vx, "vy": vy, "vida": random.randint(45, 70)})
+
+# ==========================================
+# 13. PANTALLA DE CARTA FLOTANTE CON CORAZONES
+# ==========================================
+class CartaFlotanteCorazones:
+    def __init__(self, root):
+        self.root = root
+        self.frame = tk.Frame(root, bg="#FFFAF0")
+        self.frame.pack(fill="both", expand=True)
+        self.canvas = tk.Canvas(self.frame, bg="#FFFAF0", highlightthickness=0, width=800, height=650)
+        self.canvas.pack(fill="both", expand=True)
+
+        self.corazones = []
+        for _ in range(30):
+            self.crear_corazon_flotante()
+
+        mensaje_carta = (
+            "Quizá te demuestro muy poco y quizá esto no sea nada o, si lo es, no sea suficiente. "
+            "No es que no quiera expresar o mostrar todo lo que siento. Realmente, hay muchas cosas que siento y que quisiera expresar, "
+            "pero creo que de verdad me quedo corta, jajaja, irónico ¿cierto? "
+            "Haciendo esto cayeron varias de mis lágrimas, no lo voy a negar. "
+            "Muchas cosas me asustan y, entre esas, que me destrocen, porque una vez ya llegué a eso. "
+            "Al menos, si llego a caer ahí otra vez, que no sea por ti, por favor. "
+            "Quiero algo bonito e igual siento que quizá si no funciona pueda ser porque soy yo el problema. "
+            "Siendo así, te pido disculpas, quizá por el miedo a llorar me limité a ciertas cosas. "
+            "Bueno, pero quiero que sepas que hay muchos sentimientos, muchas emociones que me haces sentir. "
+            "Me haces feliz y quiero poder hacerte igual de feliz. "
+            "Gracias por estar y por aguantarme. Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor. "
+            "¡Muakkkk!"
+        )
+
+        self.canvas.create_rectangle(100, 100, 700, 550, fill="#FFEFF4", outline="#FFC0CB", width=2, tags="carta")
+        self.canvas.create_text(400, 120, text="Mi Carta Especial...", font=("Georgia", 22, "bold"), fill="#DB7093", tags="carta")
+        # Canvas no tiene wraplength. Usamos width para el ajuste
+        self.canvas.create_text(400, 325, text=mensaje_carta, font=("Verdana", 11, "italic"), fill="#505050",
+                                width=550, justify="center", tags="carta", anchor="center")
+
+        btn_cerrar = tk.Button(self.frame, text="Finalizar con un abrazo virtual 🤗", font=("Arial", 12, "bold"),
+                               bg="#FF69B4", fg="white", command=self.root.quit, bd=0, padx=20, pady=10,
+                               activebackground="#DB7093", activeforeground="white")
+        self.canvas.create_window(400, 580, window=btn_cerrar)
+
+        self.animar_corazones()
+
+    def crear_corazon_flotante(self):
+        x = random.randint(0, 800)
+        y = random.randint(550, 650)
+        size = random.randint(15, 25)
+        color = random.choice(["#FFB6C1", "#FFC0CB", "#DB7093"])
+        h = self.canvas.create_polygon(
+            x, y - size,
+            x - size, y - size * 0.5,
+            x - size * 0.5, y + size * 0.5,
+            x, y + size,
+            x + size * 0.5, y + size * 0.5,
+            x + size, y - size * 0.5,
+            fill=color, outline="", smooth=True, tags="corazon"
+        )
+        self.corazones.append({"id": h, "vx": random.uniform(-0.5, 0.5), "vy": random.uniform(-1, -3)})
+
+    def animar_corazones(self):
+        for c in self.corazones[:]:
+            try:
+                self.canvas.move(c["id"], c["vx"], c["vy"])
+                pos = self.canvas.coords(c["id"])
+                if not pos or pos[1] < -50:
+                    self.canvas.delete(c["id"])
+                    self.corazones.remove(c)
+                    self.crear_corazon_flotante()
+            except:
+                try:
+                    self.corazones.remove(c)
+                except:
+                    pass
+        self.root.after(50, self.animar_corazones)
+
+# ==========================================
+# 14. LANZADOR PRINCIPAL (SECUENCIA COMPLETA + MÚSICA + FINALES)
+# ==========================================
+class App:
+    def __init__(self, root):
+        self.root = root
+        self.root.geometry("800x650")
+        self.root.title("Con amor para ti 🌸")
+        self.root.resizable(False, False)
+        self.contenedor = tk.Frame(self.root)
+        self.contenedor.pack(fill="both", expand=True)
+        self.cargar_bienvenida()
+
+    def _limpiar(self):
+        for w in self.contenedor.winfo_children(): w.destroy()
+
+    def cargar_bienvenida(self):
+        self._limpiar()
+        PantallaBienvenida(self.contenedor, self.cargar_juego_1)
+
+    def cargar_juego_1(self):
+        self._limpiar()
+        AtrapaCorazonesRondas(self.contenedor, self.cargar_juego_2)
+
+    def cargar_juego_2(self):
+        self._limpiar()
+        JuegoColores(self.contenedor, self.cargar_juego_3)
+
+    def cargar_juego_3(self):
+        self._limpiar()
+        ViajeEstelarPrincipito(self.contenedor, self.cargar_juego_8)
+
+    def cargar_juego_8(self):
+        self._limpiar()
+        EsquivaPenasDinamico(self.contenedor, self.cargar_juego_9)
+
+    def cargar_juego_9(self):
+        self._limpiar()
+        LaberintoDinamico(self.contenedor, self.cargar_final)
+
+    def cargar_final(self):
+        self._limpiar()
+        JardinFinal(self.contenedor, self.cargar_musica_1)
+
+    def cargar_musica_1(self):
+        self._limpiar()
+        TriviaMusical(self.contenedor, self.cargar_musica_2)
+
+    def cargar_musica_2(self):
+        self._limpiar()
+        CompletarLetra(self.contenedor, self.cargar_musica_3)
+
+    def cargar_musica_3(self):
+        self._limpiar()
+        AdivinaEmojiArtista(self.contenedor, self.cargar_fuegos)
+
+    def cargar_fuegos(self):
+        self._limpiar()
+        FuegosArtificialesCanciones(self.contenedor, self.cargar_carta)
+
+    def cargar_carta(self):
+        self._limpiar()
+        CartaFlotanteCorazones(self.contenedor)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    App(root)
+    root.mainloop()
+
+  </code></pre>
+
+  <p style="margin-top:50px; font-style:italic;">
+    “Lo esencial es invisible a los ojos” 🌌
+  </p>
+</body>
+</html>
