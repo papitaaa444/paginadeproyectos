@@ -38,7 +38,6 @@
   <button class="btn btn-rosa" onclick="mostrar('juego1')">Comenzar Viaje ✨</button>
 </section>
 
-<!-- Juego 1: Rondas -->
 <section id="juego1" class="pantalla">
   <h2 style="color:#CD5C5C">💖 Primer Reto: Afecto</h2>
 
@@ -63,6 +62,19 @@
     <button id="btnNext1" class="btn btn-primario" style="display:none;" onclick="mostrar('juego2')">Siguiente ➡️</button>
   </div>
 </section>
+
+<script>
+function pasarRonda(n){
+  if(n===1){
+    document.getElementById("ronda1").style.display="none";
+    document.getElementById("ronda2").style.display="block";
+  }
+  if(n===2){
+    document.getElementById("ronda2").style.display="none";
+    document.getElementById("ronda3").style.display="block";
+  }
+}
+</script>
 
 <!-- Juego 2: Colores -->
 <section id="juego2" class="pantalla">
@@ -640,6 +652,7 @@ c3.addEventListener("click",(e)=>{
 </script>
 </body>
 </html>
+
 
 
 
