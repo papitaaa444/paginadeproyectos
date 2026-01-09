@@ -9,7 +9,7 @@
       --rosa:#FF69B4; --rosa-claro:#FFB6C1; --magenta:#DB7093; --bg:#FFF0F5;
       --oscuro:#0b132b; --azul:#00d4ff; --verde:#1DB954; --gris:#1a1a1a; --oro:#FFD700;
     }
-    * { box-sizing: border-box; touch-action: manipulation; }
+    * { box-sizing: border-box; }
     body { margin:0; font-family: Georgia, serif; background: var(--bg); color:#333; overflow-x: hidden; }
     .pantalla { display:none; padding:20px; text-align:center; min-height:100vh; }
     .btn { margin:10px; padding:12px 20px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; }
@@ -18,7 +18,7 @@
     .btn-verde { background: var(--verde); color:white; }
     .btn-azul { background: var(--azul); color:black; }
     canvas { border:2px solid #ffc0cb; background:transparent; border-radius:8px; max-width: 100%; height: auto; touch-action: none; }
-    input { padding:10px; font-size:16px; border:2px solid #eee; border-radius:8px; text-align:center; width: 80%; }
+    input { padding:12px; font-size:16px; border:2px solid #eee; border-radius:8px; text-align:center; width: 80%; }
     #juego3 { background: var(--oscuro); color:white; }
     #juego4 { background:#0d1b2a; color:white; }
     #juego10 { background:#000014; color:white; }
@@ -37,18 +37,17 @@
   <h2 style="color:#CD5C5C">💖 Primer Reto: Afecto</h2>
   <div id="ronda1">
     <h3>Ronda 1: Un besito ❤️</h3>
-    <p>(Toca el corazón si puedes...)</p>
-    <canvas id="canvasR1" width="320" height="300"></canvas>
+    <canvas id="canvasR1" width="600" height="260"></canvas>
     <br><button class="btn btn-rosa" onclick="pasarRonda(1)">Siguiente ➡️</button>
   </div>
   <div id="ronda2" style="display:none;">
     <h3>Ronda 2: Un abrazo 💜</h3>
-    <canvas id="canvasR2" width="320" height="300"></canvas>
+    <canvas id="canvasR2" width="600" height="260"></canvas>
     <br><button class="btn btn-rosa" onclick="pasarRonda(2)">Siguiente ➡️</button>
   </div>
   <div id="ronda3" style="display:none;">
     <h3>Busca 5 corazones rosados 💗</h3>
-    <canvas id="canvasCorazones" width="320" height="350"></canvas>
+    <canvas id="canvasCorazones" width="600" height="350"></canvas>
     <p id="puntos">Puntos: 0/5</p>
     <button id="btnNext1" class="btn btn-primario" style="display:none;" onclick="mostrar('juego2')">Siguiente ➡️</button>
   </div>
@@ -63,81 +62,81 @@
 
 <section id="juego3" class="pantalla">
   <h2>🚀 Viaje Estelar (El Principito)</h2>
-  <p id="frase" style="font-style: italic;"></p>
+  <p id="frase" style="padding: 0 20px; font-style: italic;"></p>
   <div id="opcionesPrincipito"></div>
   <p id="estado"></p>
 </section>
 
 <section id="juego4" class="pantalla">
   <h2>✨ PROTEGE NUESTRO CIELO ✨</h2>
-  <p>Desliza el dedo para mover el corazón ❤️</p>
-  <canvas id="canvasEsquiva" width="320" height="400"></canvas>
+  <canvas id="canvasEsquiva" width="600" height="450"></canvas>
   <p id="energia">Energía del Amor: 0%</p>
 </section>
 
 <section id="juego5" class="pantalla">
   <h2>💖 Laberinto Mágico</h2>
-  <p>Lleva el corazón a la zona roja 🚩</p>
-  <canvas id="canvasLaberinto" width="320" height="400"></canvas>
+  <p id="vidas">Vidas: ❤️ ❤️ ❤️</p>
+  <canvas id="canvasLaberinto" width="600" height="400"></canvas>
 </section>
 
 <section id="juego6" class="pantalla">
   <h2>🌸 Jardín Final 🌸</h2>
-  <canvas id="canvasJardin" width="320" height="450"></canvas>
+  <canvas id="canvasJardin" width="800" height="650"></canvas>
   <br><button class="btn btn-primario" onclick="mostrar('juego7')">Continuar ➡️</button>
 </section>
 
 <section id="juego7" class="pantalla">
   <h2>🎵 Trivia Musical 🎵</h2>
-  <p id="pregunta"></p>
+  <p id="pregunta" style="font-weight: bold; font-size: 1.2em;"></p>
   <div id="opcionesTrivia"></div>
 </section>
 
 <section id="juego8" class="pantalla">
   <h2>🎤 Completa la letra 🎤</h2>
-  <p id="tituloLetra" style="font-style:italic; color:#cccccc"></p>
-  <p id="fraseLetra" style="font-weight:bold"></p>
+  <p id="tituloLetra" style="font-style:italic; color:#666"></p>
+  <p id="fraseLetra" style="font-weight:bold; margin: 20px 0;"></p>
   <div id="opcionesLetra"></div>
 </section>
 
 <section id="juego9" class="pantalla">
-  <h2>🕵️ Adivina el Artista</h2>
-  <p id="emojiArtista" style="font-size:40px;"></p>
-  <input id="entradaArtista" type="text" placeholder="Escribe el nombre..." />
+  <h2>🕵️ Adivina el Artista por Emojis</h2>
+  <p id="emojiArtista" style="font-size:45px; margin: 20px 0;"></p>
+  <input id="entradaArtista" type="text" placeholder="Respuesta..." />
   <br><button class="btn btn-verde" onclick="verificarArtista()">Comprobar</button>
+  <p id="errorArtista" style="color:red;"></p>
 </section>
 
 <section id="juego10" class="pantalla">
   <h2 style="color:var(--oro)">🎉 ¡Felicidades! 🎉</h2>
-  <div style="background: rgba(219, 112, 147, 0.2); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--rosa);">
-    <p style="color: #FFB6C1; font-style: italic; font-size: 0.9em; margin-bottom: 10px;">
-      "Estos pequeños retos eran para mostrarte 5 canciones que me recuerdan a ti"
-    </p>
-    <ul style="list-style: none; padding: 0; color: white; text-align: left; display: inline-block; font-size: 0.85em; font-family: sans-serif;">
+  <div style="background: rgba(219, 112, 147, 0.2); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--rosa); text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+    <p style="color: #FFB6C1; font-style: italic; font-size: 0.9em; text-align: center;">"5 canciones que me recuerdan a ti"</p>
+    <ul style="list-style: none; padding: 0; color: white; font-family: sans-serif; font-size: 0.85em;">
       <li>1. 🎵 The Boy Is Mine - Ariana Grande</li>
       <li>2. 🎵 Lo Que Siento - Cuco</li>
       <li>3. 🎵 Te Amaré - Silvio Rodríguez</li>
-      <li>4. 🎵 Nadie Sabe - Bad Bunny</li>
-      <li>5. 🎵 Die With A Smile - Lady Gaga y Bruno Mars</li>
+      <li>4. 🎵 Nadie Sabe / Monaco - Bad Bunny</li>
+      <li>5. 🎵 Die With A Smile - Lady Gaga & Bruno Mars</li>
     </ul>
   </div>
-  <canvas id="canvasFuegos" width="320" height="350"></canvas>
+  <canvas id="canvasFuegos" width="800" height="600"></canvas>
   <br><button class="btn btn-rosa" onclick="mostrar('cartaFinal')">Abrir Carta Especial 💌</button>
 </section>
 
 <section id="cartaFinal" class="pantalla">
-  <div id="contenedorCarta" style="max-width:90%; margin:0 auto; background:#FFEFF4; border:2px solid #FFC0CB; border-radius:12px; padding:20px; position: relative; z-index: 10;">
-    <h3 style="color:#DB7093; margin-top:0;">Mi carta especial...</h3>
-    <div style="text-align:justify; font-size:14px; line-height:1.5; color:#505050; max-height: 350px; overflow-y: auto; padding-right: 5px;">
-      Quizá te demuestro muy poco y quizá esto no sea nada o, si lo es, no sea suficiente. No es que no quiera expresar o mostrar todo lo que siento. Realmente, hay muchas cosas que siento y que quisiera expresar, pero creo que de verdad me quedo corta, jajaja, irónico ¿cierto? Haciendo esto cayeron varias de mis lágrimas, no lo voy a negar. Muchas cosas me asustan y, entre esas, que me destrocen, porque una vez ya llegué a eso. Al menos, si llego a caer ahí otra vez, que no sea por ti, por favor. Quiero algo bonito e igual siento que quizá si no funciona pueda ser porque soy yo el problema. Siendo así, te pido disculpas, quizá por el miedo a llorar me limité a ciertas cosas. Bueno, pero quiero que sepas que hay muchos sentimientos, muchas emociones que me haces sentir. Me haces feliz y quiero poder hacerte igual de feliz. Gracias por estar y por aguantarme. Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor. ¡Muakkkk!
+  <div style="position:relative; max-width:800px; margin:0 auto;">
+    <canvas id="canvasCarta" width="800" height="600" style="position:absolute; top:0; left:0; pointer-events:none;"></canvas>
+    <div style="background:#FFEFF4; border:2px solid #FFC0CB; border-radius:12px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.1); position:relative; z-index:2;">
+      <h3 style="color:#DB7093;">Mi carta especial...</h3>
+      <div style="text-align:justify; font-size:15px; line-height:1.6; color:#505050; max-height:400px; overflow-y:auto;">
+        Quizá te demuestro muy poco y quizá esto no sea nada o, si lo es, no sea suficiente. No es que no quiera expresar o mostrar todo lo que siento. Realmente, hay muchas cosas que siento y que quisiera expresar, pero creo que de verdad me quedo corta, jajaja, irónico ¿cierto? Haciendo esto cayeron varias de mis lágrimas, no lo voy a negar. Muchas cosas me asustan y, entre esas, que me destrocen, porque una vez ya llegué a eso. Al menos, si llego a caer ahí otra vez, que no sea por ti, por favor. Quiero algo bonito e igual siento que quizá si no funciona pueda ser porque soy yo el problema. Siendo así, te pido disculpas, quizá por el miedo a llorar me limité a ciertas cosas. Bueno, pero quiero que sepas que hay muchos sentimientos, muchas emociones que me haces sentir. Me haces feliz y quiero poder hacerte igual de feliz. Gracias por estar y por aguantarme. Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor. ¡Muakkkk!
+      </div>
+      <button class="btn btn-primario" style="margin-top:20px;" onclick="location.reload()">Finalizar con un abrazo 🤗</button>
     </div>
-    <button class="btn btn-primario" onclick="location.reload()" style="margin-top:15px;">Finalizar con un abrazo 🤗</button>
   </div>
-  <canvas id="canvasCarta" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
 </section>
 
 <script>
-// --- LÓGICA DE NAVEGACIÓN Y UTILIDADES MÓVIL ---
+// --- UTILIDADES ---
 function mostrar(id){
   document.querySelectorAll('.pantalla').forEach(p=>p.style.display='none');
   document.getElementById(id).style.display='block';
@@ -148,10 +147,12 @@ function getPos(e, canvas) {
   const rect = canvas.getBoundingClientRect();
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  return { x: clientX - rect.left, y: clientY - rect.top };
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
 }
 
-// --- JUEGO 1: CORAZONES ---
+// --- JUEGO 1: RONDAS ---
 function pasarRonda(n){
   document.getElementById("ronda"+n).style.display="none";
   document.getElementById("ronda"+(n+1)).style.display="block";
@@ -159,130 +160,188 @@ function pasarRonda(n){
 
 const setupHuye = (id, emoji) => {
   const cvs = document.getElementById(id), ctx = cvs.getContext("2d");
-  let p = {x:160, y:150};
-  const draw = () => { ctx.clearRect(0,0,cvs.width,cvs.height); ctx.font="50px Arial"; ctx.fillText(emoji, p.x-25, p.y+20); };
+  let p = {x:300, y:130};
+  const draw = () => { ctx.clearRect(0,0,cvs.width,cvs.height); ctx.font="52px Arial"; ctx.fillText(emoji, p.x-26, p.y+20); };
   const mover = (e) => {
     const pos = getPos(e, cvs);
     if(Math.hypot(pos.x-p.x, pos.y-p.y) < 60) {
-      p.x = Math.random()*(cvs.width-60)+30; p.y = Math.random()*(cvs.height-60)+30;
+      p.x = Math.random()*(cvs.width-80)+40; p.y = Math.random()*(cvs.height-80)+40;
       draw();
     }
   };
-  cvs.addEventListener("touchstart", (e)=>{ e.preventDefault(); mover(e); });
+  cvs.addEventListener("touchstart", (e)=>{ e.preventDefault(); mover(e); }, {passive: false});
   cvs.addEventListener("mousemove", mover);
   draw();
 };
 setupHuye("canvasR1", "❤️");
 setupHuye("canvasR2", "💜");
 
-// Ronda 3: Buscar Corazones
+// Ronda 3
 (function(){
   const cvs = document.getElementById("canvasCorazones"), ctx = cvs.getContext("2d");
-  let pts = 0, items = [];
+  let pts = 0, items = [], timer;
   function spawn(){
     if(pts>=5) return;
-    items.push({x:Math.random()*280+20, y:Math.random()*300+30, t:["❤️","💜","💗","🌸"][(Math.random()*4)|0]});
+    items.push({x:Math.random()*540+30, y:Math.random()*300+30, t:["❤️","💜","💗","🌸","✨"][(Math.random()*5)|0]});
     ctx.clearRect(0,0,cvs.width,cvs.height);
-    items.forEach(i=>{ ctx.font="30px Arial"; ctx.fillText(i.t, i.x, i.y); });
-    setTimeout(spawn, 400);
+    items.forEach(i=>{ ctx.font="36px Arial"; ctx.fillText(i.t, i.x, i.y); });
+    timer = setTimeout(spawn, 250);
   }
-  cvs.addEventListener("click", (e)=>{
+  const tocar = (e) => {
     const pos = getPos(e, cvs);
     items.forEach((it, idx)=>{
-      if(Math.hypot(pos.x-it.x, pos.y-it.y+15)<35 && it.t==="💗"){
-        pts++; items.splice(idx,1);
-        document.getElementById("puntos").innerText = `Puntos: ${pts}/5`;
-        if(pts>=5) document.getElementById("btnNext1").style.display="inline";
+      if(Math.hypot(pos.x-it.x, pos.y-it.y+18)<45){
+        if(it.t==="💗") {
+          pts++; document.getElementById("puntos").innerText = `Puntos: ${pts}/5`;
+          if(pts>=5) { document.getElementById("btnNext1").style.display="inline-block"; clearTimeout(timer); }
+        }
+        items.splice(idx,1);
       }
     });
-  });
-  const obs = new MutationObserver(()=>{ if(document.getElementById("ronda3").style.display==="block" && pts===0) spawn(); });
+  };
+  cvs.addEventListener("mousedown", tocar);
+  cvs.addEventListener("touchstart", (e)=>{ e.preventDefault(); tocar(e); }, {passive: false});
+  const obs = new MutationObserver(()=>{ if(document.getElementById("ronda3").style.display==="block" && items.length===0) spawn(); });
   obs.observe(document.body, {attributes:true, subtree:true});
 })();
 
 // --- JUEGO 2: COLORES ---
 (function(){
   let intentos = 3;
-  const opciones = [{n:"Azul", c:"#ADD8E6"}, {n:"Rojo", c:"#FFB2B2"}, {n:"Verde", c:"#C2F0C2"}, {n:"Amarillo", c:"#FFFFE0"}];
   const div = document.getElementById("opciones");
-  div.innerHTML = opciones.map(o => `<button class="btn" style="background:${o.c}" onclick="checkC('${o.n}')">${o.n}</button>`).join("");
+  const opciones = [{n:"Azul", c:"#ADD8E6"}, {n:"Rojo", c:"#FFB2B2"}, {n:"Verde", c:"#C2F0C2"}, {n:"Amarillo", c:"#FFFFE0"}];
+  div.innerHTML = opciones.map(o => `<button class="btn" style="background:${o.c}; width:120px;" onclick="checkC('${o.n}')">${o.n}</button>`).join("");
   window.checkC = (n) => {
     intentos--;
-    if(intentos>0) document.getElementById("intentos").innerText = `Intentos: ${intentos}`;
-    else {
-      div.innerHTML = `<button class="btn btn-rosa" onclick="mostrar('juego3')">¡Era Rosado! Toca para seguir 🤡</button>`;
+    if(intentos>0) {
+      document.getElementById("mensaje").innerText = "Ese no es... ¡Intenta de nuevo! 🤭";
+      document.getElementById("intentos").innerText = `Te quedan ${intentos} intentos`;
+    } else {
+      div.innerHTML = `<button class="btn btn-rosa" onclick="finalColor()">Tap aquí, era el color de fondo 🤡</button>`;
+      document.getElementById("intentos").innerText = "¡Se acabaron!";
     }
+  };
+  window.finalColor = () => {
+    document.getElementById("juego2").innerHTML = `<h2 style="color:white; background:#FFC0CB; padding:50px; border-radius:12px;">¡Era ROSADO! 💗</h2><button class="btn btn-primario" onclick="mostrar('juego3')">Continuar ✨</button>`;
   };
 })();
 
 // --- JUEGO 3: PRINCIPITO ---
 (function(){
-  const f = [{q:"Lo esencial es invisible...", a:"a los ojos"}, {q:"Todas las personas mayores fueron...", a:"niños"}];
-  let i = 0;
-  window.checkP = (a)=>{ if(a===f[i].a){ i++; render(); } };
+  const frases = [
+    {q:"Lo esencial es invisible...", a:"a los ojos", o:["al corazón","al alma"]},
+    {q:"Fue el tiempo que pasaste con tu...", a:"rosa", o:["zorro","planeta"]}
+  ];
+  let idx = 0;
+  window.checkP = (a)=>{ if(a===frases[idx].a){ idx++; render(); } else { document.getElementById("estado").innerText="❌ Intenta de nuevo"; } };
   function render(){
-    if(i>=f.length) { document.getElementById("juego3").innerHTML = `<button class="btn btn-azul" onclick="mostrar('juego4')">Continuar 🚀</button>`; return; }
-    document.getElementById("frase").innerText = f[i].q;
-    document.getElementById("opcionesPrincipito").innerHTML = `<button class="btn" onclick="checkP('${f[i].a}')">${f[i].a}</button><button class="btn" onclick="alert('Nop')">al corazón</button>`;
+    if(idx>=frases.length) { document.getElementById("juego3").innerHTML = `<h2>✨ ¡Sabias palabras! ✨</h2><button class="btn btn-azul" onclick="mostrar('juego4')">Continuar 🚀</button>`; return; }
+    document.getElementById("frase").innerText = `"${frases[idx].q}"`;
+    const opts = [frases[idx].a, ...frases[idx].o].sort(()=>Math.random()-0.5);
+    document.getElementById("opcionesPrincipito").innerHTML = opts.map(o=>`<button class="btn" style="background:#1c2541; color:white;" onclick="checkP('${o}')">${o}</button>`).join("");
   }
   render();
 })();
 
-// --- JUEGO 4: ESQUIVA (MÓVIL) ---
+// --- JUEGO 4: ESQUIVA ---
 (function(){
   const cvs = document.getElementById("canvasEsquiva"), ctx = cvs.getContext("2d");
-  let cor = {x:160, y:350}, p = 0, active = false;
-  cvs.addEventListener("touchmove", (e)=>{ e.preventDefault(); const pos = getPos(e, cvs); cor.x = pos.x; cor.y = pos.y; });
+  let cor = {x:300, y:350}, p = 0, jugando = false, obsArr = [];
+  const mover = (e) => { const pos = getPos(e, cvs); cor.x = pos.x; cor.y = pos.y; };
+  cvs.addEventListener("mousemove", mover);
+  cvs.addEventListener("touchmove", (e)=>{ e.preventDefault(); mover(e); }, {passive: false});
+
   function loop(){
-    if(!active) return;
-    ctx.clearRect(0,0,cvs.width,cvs.height);
+    if(!jugando) return;
+    ctx.clearRect(0,0,600,450);
     ctx.font="30px Arial"; ctx.fillText("❤️", cor.x-15, cor.y);
-    p += 0.3; document.getElementById("energia").innerText = `Energía: ${Math.floor(Math.min(100,p))}%`;
-    if(p>=100) { active=false; document.getElementById("juego4").innerHTML += `<button class="btn btn-azul" onclick="mostrar('juego5')">Siguiente</button>`; }
+    if(Math.random()<0.1) obsArr.push({x:Math.random()*600, y:-30, t:"☁️", vy:5});
+    obsArr.forEach((o,i)=>{
+      ctx.fillText(o.t, o.x, o.y); o.y+=o.vy;
+      if(Math.hypot(cor.x-o.x, cor.y-o.y)<30) p = Math.max(0, p-5);
+    });
+    p += 0.4; document.getElementById("energia").innerText = `Energía: ${Math.floor(Math.min(100,p))}%`;
+    if(p>=100){ jugando=false; document.getElementById("juego4").innerHTML += `<button class="btn btn-azul" onclick="mostrar('juego5')">¡Siguiente!</button>`; }
     else requestAnimationFrame(loop);
   }
-  const obs = new MutationObserver(()=>{ if(document.getElementById("juego4").style.display==="block" && !active) { active=true; loop(); } });
+  const obs = new MutationObserver(()=>{ if(document.getElementById("juego4").style.display==="block" && !jugando) { jugando=true; loop(); } });
   obs.observe(document.body, {attributes:true, subtree:true});
 })();
 
-// --- JUEGO 5: LABERINTO (MÓVIL) ---
+// --- JUEGO 5: LABERINTO ---
 (function(){
   const cvs = document.getElementById("canvasLaberinto"), ctx = cvs.getContext("2d");
-  let jug = {x:30, y:30};
-  const mover = (e)=>{ 
-    const pos = getPos(e, cvs); jug.x = pos.x; jug.y = pos.y; 
-    ctx.clearRect(0,0,cvs.width,cvs.height);
-    ctx.fillStyle="red"; ctx.fillRect(270, 350, 40, 40); // Meta
-    ctx.fillText("💖", jug.x-10, jug.y);
-    if(jug.x > 270 && jug.y > 350) { document.getElementById("juego5").innerHTML = `<button class="btn btn-rosa" onclick="mostrar('juego6')">Ganaste! Siguiente</button>`; }
+  let jug = {x:40, y:40};
+  const draw = () => {
+    ctx.clearRect(0,0,600,400);
+    ctx.fillStyle="#FF1493"; ctx.beginPath(); ctx.arc(550, 350, 25, 0, Math.PI*2); ctx.fill(); // Meta
+    ctx.font="25px Arial"; ctx.fillText("💖", jug.x-12, jug.y+8);
   };
-  cvs.addEventListener("touchmove", (e)=>{ e.preventDefault(); mover(e); });
+  const mover = (e) => {
+    const pos = getPos(e, cvs); jug.x = pos.x; jug.y = pos.y; draw();
+    if(Math.hypot(jug.x-550, jug.y-350)<30) { document.getElementById("juego5").innerHTML = `<h2>¡Increíble!</h2><button class="btn btn-primario" onclick="mostrar('juego6')">Ver Regalo 🎁</button>`; }
+  };
+  cvs.addEventListener("touchmove", (e)=>{ e.preventDefault(); mover(e); }, {passive: false});
+  cvs.addEventListener("mousemove", mover);
+  draw();
 })();
 
-// --- JUEGO 6: JARDÍN ---
+// --- JUEGO 6: JARDÍN (TULIPANES DETALLADOS ORIGINALES) ---
 (function(){
   const cvs = document.getElementById("canvasJardin"), ctx = cvs.getContext("2d");
-  function draw(){
-    ctx.fillStyle="#FFF9FB"; ctx.fillRect(0,0,320,450);
-    for(let i=0; i<15; i++) {
-      let x = Math.random()*300, y = Math.random()*100+300;
-      ctx.strokeStyle="green"; ctx.strokeRect(x, y, 2, 50);
-      ctx.fillStyle="pink"; ctx.beginPath(); ctx.arc(x+1, y, 10, 0, Math.PI*2); ctx.fill();
-    }
-    ctx.fillStyle="#DB7093"; ctx.fillText("Un jardín para ti", 100, 50);
+  const paleta=["#FFB6C1","#DB7093","#FF69B4","#FF1493","#FFC0CB"];
+  
+  function drawTulip(x, y, scale=1){
+    ctx.strokeStyle="#5FA66B"; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y+100*scale); ctx.stroke();
+    ctx.fillStyle="#6FBF73";
+    ctx.beginPath(); ctx.ellipse(x-12, y+60, 20, 8, Math.PI/6, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x+12, y+70, 20, 8, -Math.PI/6, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = paleta[(Math.random()*5)|0];
+    // Pétalos detallados
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x-10, y-30, x, y-50); ctx.quadraticCurveTo(x+10, y-30, x, y); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x-25, y-25, x-10, y-50); ctx.quadraticCurveTo(x-5, y-25, x, y); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x+25, y-25, x+10, y-50); ctx.quadraticCurveTo(x+5, y-25, x, y); ctx.fill();
   }
-  const obs = new MutationObserver(()=>{ if(document.getElementById("juego6").style.display==="block") draw(); });
+
+  function loop(){
+    ctx.fillStyle="#FFF9FB"; ctx.fillRect(0,0,800,650);
+    ctx.fillStyle="#DB7093"; ctx.font="30px Georgia"; ctx.fillText("Para mi lugar seguro...", 250, 80);
+    for(let i=0; i<25; i++) drawTulip(50 + (i*28)%700, 450 + (i*15)%150, 1);
+    requestAnimationFrame(loop);
+  }
+  const obs = new MutationObserver(()=>{ if(document.getElementById("juego6").style.display==="block") loop(); });
   obs.observe(document.body, {attributes:true, subtree:true});
 })();
 
-// --- TRIVIA, LETRA Y ARTISTA ---
+// --- JUEGO 7: TRIVIA ---
+(function(){
+  const q = [
+    {p:"¿'El Sol de México'?", c:"Luis Miguel", o:["Chayanne","Luis Miguel","Cristian Castro"]},
+    {p:"¿Género de 'Bohemian Rhapsody'?", c:"Rock", o:["Pop","Rock","Salsa"]}
+  ];
+  let i = 0;
+  window.checkT = (o) => { if(o===q[i].c){ i++; render(); } else alert("Incorrecto!"); };
+  function render(){
+    if(i>=q.length){ document.getElementById("juego7").innerHTML = `<h2>¡Trivia Lista!</h2><button class="btn btn-verde" onclick="mostrar('juego8')">Siguiente</button>`; return; }
+    document.getElementById("pregunta").innerText = q[i].p;
+    document.getElementById("opcionesTrivia").innerHTML = q[i].o.map(opt => `<button class="btn" style="background:#333; color:white;" onclick="checkT('${opt}')">${opt}</button>`).join("");
+  }
+  render();
+})();
+
+// --- JUEGO 8 & 9 (BAD BUNNY) ---
 (function(){
   window.verificarArtista = () => {
-    const val = document.getElementById("entradaArtista").value.toLowerCase();
-    if(val.includes("bad bunny") || val.includes("ariana") || val.includes("luis miguel")) {
-      mostrar('juego10');
-    } else { alert("¡Intenta de nuevo!"); }
+    const v = document.getElementById("entradaArtista").value.toLowerCase();
+    if(v.includes("bad bunny") || v.includes("benito")) { mostrar('juego10'); }
+    else if(v.includes("ariana")) { document.getElementById("emojiArtista").innerText = "👁️ 🐰 🏎️"; } // Pista para Bad Bunny
+    else { alert("¡Casi! Piensa en un Conejo..."); }
   };
+  document.getElementById("emojiArtista").innerText = "👁️ 🐰 🏎️";
+  document.getElementById("tituloLetra").innerText = "Luis Miguel";
+  document.getElementById("fraseLetra").innerText = "Si tú me hubieras dicho siempre la verdad...";
+  document.getElementById("opcionesLetra").innerHTML = `<button class="btn btn-azul" onclick="mostrar('juego9')">si hubieras respondido cuando te llamé</button>`;
 })();
 
 // --- JUEGO 10: FUEGOS ---
@@ -290,39 +349,19 @@ setupHuye("canvasR2", "💜");
   const cvs = document.getElementById("canvasFuegos"), ctx = cvs.getContext("2d");
   let part = [];
   function anim(){
-    ctx.fillStyle="rgba(0,0,20,0.2)"; ctx.fillRect(0,0,cvs.width,cvs.height);
+    ctx.fillStyle="rgba(0,0,20,0.2)"; ctx.fillRect(0,0,800,600);
     if(Math.random()<0.05) {
-      let x=Math.random()*cvs.width, y=Math.random()*150+50, col="hsl("+Math.random()*360+",100%,50%)";
-      for(let i=0; i<30; i++) part.push({x, y, vx:Math.random()*4-2, vy:Math.random()*4-2, c:col, v:50});
+      let x=Math.random()*800, y=Math.random()*300, col="hsl("+Math.random()*360+",100%,50%)";
+      for(let i=0; i<50; i++) part.push({x,y,vx:Math.random()*6-3, vy:Math.random()*6-3, life:60, c:col});
     }
     part.forEach((p,i)=>{
-      ctx.fillStyle=p.c; ctx.fillRect(p.x, p.y, 2, 2);
-      p.x+=p.vx; p.y+=p.vy; p.v--;
-      if(p.v<=0) part.splice(i,1);
+      ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--;
+      if(p.life<=0) part.splice(i,1);
     });
     requestAnimationFrame(anim);
   }
   const obs = new MutationObserver(()=>{ if(document.getElementById("juego10").style.display==="block") anim(); });
-  obs.observe(document.body, {attributes:true, subtree:true});
-})();
-
-// --- CARTA FINAL: CORAZONES FLOTANTES ---
-(function(){
-  const cvs = document.getElementById("canvasCarta"), ctx = cvs.getContext("2d");
-  let hearts = [];
-  function resize(){ cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
-  window.addEventListener("resize", resize); resize();
-  function loop(){
-    ctx.clearRect(0,0,cvs.width,cvs.height);
-    if(Math.random()<0.1) hearts.push({x:Math.random()*cvs.width, y:cvs.height+20, s:Math.random()*15+10, v:Math.random()*2+1});
-    hearts.forEach((h,i)=>{
-      ctx.font = h.s+"px Arial"; ctx.fillText("💗", h.x, h.y);
-      h.y -= h.v;
-      if(h.y < -20) hearts.splice(i,1);
-    });
-    requestAnimationFrame(loop);
-  }
-  const obs = new MutationObserver(()=>{ if(document.getElementById("cartaFinal").style.display==="block") loop(); });
   obs.observe(document.body, {attributes:true, subtree:true});
 })();
 </script>
