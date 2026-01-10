@@ -72,65 +72,14 @@
             <canvas id="canvasDibujo" width="350" height="420"></canvas>
             <br><button class="btn" onclick="pasarRonda(1)">Siguiente ➡️</button>
         </div>
-       // --- RONDA 2: RELLENAR CORAZÓN (VERSIÓN ULTRA-COMPATIBLE) ---
-const canvaF = document.getElementById("canvasFill"), ctxF = canvaF.getContext("2d");
-let pixT = 0;
-
-function iniciarRonda2() {
-    ctxF.clearRect(0,0,350,420);
-    ctxF.fillStyle = "#ebebeb"; // Gris muy claro
-    ctxF.font = "380px Arial";
-    ctxF.textAlign = "center";
-    ctxF.textBaseline = "middle";
-    ctxF.fillText("❤", 175, 210);
-    
-    // Contamos el área gris
-    const d = ctxF.getImageData(0,0,350,420).data;
-    pixT = 0; 
-    for(let i=0; i<d.length; i+=4) {
-        if(d[i] < 250) pixT++; // Cualquier píxel que no sea blanco
-    }
-}
-
-function paintF(e) {
-    e.preventDefault();
-    const p = getPos(e, canvaF);
-    
-    ctxF.globalCompositeOperation = "source-atop";
-    ctxF.fillStyle = "#ff4d6d"; // El rosa
-    ctxF.beginPath(); 
-    ctxF.arc(p.x, p.y, 40, 0, Math.PI*2); // Pincel más grande (40)
-    ctxF.fill();
-    
-    // VERIFICACIÓN FLEXIBLE:
-    const imgData = ctxF.getImageData(0,0,350,420).data;
-    let pintados = 0;
-    for(let i=0; i<imgData.length; i+=4) {
-        // Si el canal Rojo es alto (rosa/rojo) y no es el gris de fondo
-        if(imgData[i] > 200 && imgData[i+1] < 150) {
-            pintados++;
-        }
-    }
-    
-    let avance = (pintados / pixT);
-    
-    // Si llega al 50%, ya lo damos por bueno para evitar que se trabe
-    if(avance > 0.50) {
-        document.getElementById("progresoTexto").innerText = "¡Llenito de amor! ❤️";
-        document.getElementById("btnNextRonda2").style.display = "inline-block";
         
-        // Efecto visual: rellenar automáticamente el resto para que se vea perfecto
-        ctxF.globalCompositeOperation = "source-atop";
-        ctxF.fill(); 
-    }
-}
+        <div id="ronda2" style="display:none;">
+            <h2>Llena mi corazón ❤️</h2>
+            <p id="progresoTexto">Píntalo de rosa con tu dedo</p>
+            <canvas id="canvasFill" width="350" height="420"></canvas>
+            <br><button id="btnNextRonda2" class="btn" style="display:none;" onclick="pasarRonda(2)">¡Siguiente! ➡️</button>
+        </div>
 
-canvaF.addEventListener("touchstart", paintF);
-canvaF.addEventListener("touchmove", paintF);
-// También para mouse por si acaso
-canvaF.addEventListener("mousedown", () => { canvaF._down = true; });
-canvaF.addEventListener("mouseup", () => { canvaF._down = false; });
-canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
         <div id="ronda3" style="display:none;">
             <h2>Atrapa 5 corazones 💗</h2>
             <p id="puntos">Puntos: 0/5</p>
@@ -175,7 +124,7 @@ canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
 <section id="juego5" class="pantalla dark-section">
     <div class="card">
         <h2>🎤 Completa la Letra</h2>
-        <p id="tituloCancion" style="color:var(--rosa)">Die With A Smile</p>
+        <p style="color:var(--rosa)">Die With A Smile</p>
         <p>"If the world was ending, I'd wanna be..."</p>
         <button class="btn" onclick="mostrar('juego6')">Next to you 👩‍❤️‍👨</button>
         <button class="btn" onclick="alert('¡Nooo!')">Alone</button>
@@ -223,6 +172,7 @@ canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
 </section>
 
 <script>
+    // --- UTILIDADES ---
     function mostrar(id){
         document.querySelectorAll('.pantalla').forEach(p => p.style.display = 'none');
         document.getElementById(id).style.display = 'block';
@@ -239,32 +189,45 @@ canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
         };
     }
 
-    // --- DIBUJO ---
+    // --- DIBUJO (R1) ---
     const canvaD = document.getElementById("canvasDibujo"), ctxD = canvaD.getContext("2d");
     let dib = false;
     canvaD.addEventListener("touchstart", (e)=>{ e.preventDefault(); dib=true; const p=getPos(e,canvaD); ctxD.beginPath(); ctxD.moveTo(p.x,p.y); });
     canvaD.addEventListener("touchmove", (e)=>{ e.preventDefault(); if(!dib)return; const p=getPos(e,canvaD); ctxD.lineTo(p.x,p.y); ctxD.strokeStyle="#ff85a2"; ctxD.lineWidth=5; ctxD.stroke(); });
     canvaD.addEventListener("touchend", ()=>dib=false);
 
-    // --- RELLENO ---
+    // --- RELLENO (R2) CORREGIDO ---
     const canvaF = document.getElementById("canvasFill"), ctxF = canvaF.getContext("2d");
     let pixT = 0;
+
     function iniciarRonda2() {
-        ctxF.fillStyle="#f0f0f0"; ctxF.font="380px Arial"; ctxF.textAlign="center"; ctxF.textBaseline="middle";
+        ctxF.clearRect(0,0,350,420);
+        ctxF.fillStyle="#ebebeb"; ctxF.font="380px Arial"; ctxF.textAlign="center"; ctxF.textBaseline="middle";
         ctxF.fillText("❤", 175, 210);
         const d = ctxF.getImageData(0,0,350,420).data;
-        pixT=0; for(let i=0; i<d.length; i+=4) if(d[i]<255) pixT++;
+        pixT=0; for(let i=0; i<d.length; i+=4) if(d[i]<250) pixT++;
     }
+
     canvaF.addEventListener("touchmove", (e)=>{
-        e.preventDefault(); const p=getPos(e,canvaF);
-        ctxF.globalCompositeOperation="source-atop"; ctxF.fillStyle="#ff4d6d";
-        ctxF.beginPath(); ctxF.arc(p.x, p.y, 35, 0, Math.PI*2); ctxF.fill();
-        const d = ctxF.getImageData(0,0,350,420).data;
-        let ptd=0; for(let i=0; i<d.length; i+=4) if(d[i]===255 && d[i+1]===77) ptd++;
-        if(ptd/pixT > 0.65) document.getElementById("btnNextRonda2").style.display="inline-block";
+        e.preventDefault(); 
+        const p=getPos(e,canvaF);
+        ctxF.globalCompositeOperation="source-atop"; 
+        ctxF.fillStyle="#ff4d6d";
+        ctxF.beginPath(); ctxF.arc(p.x, p.y, 40, 0, Math.PI*2); ctxF.fill();
+        
+        const imgData = ctxF.getImageData(0,0,350,420).data;
+        let pintados=0; 
+        for(let i=0; i<imgData.length; i+=4) {
+            if(imgData[i] > 200 && imgData[i+1] < 150) pintados++;
+        }
+        
+        if(pintados/pixT > 0.50) {
+            document.getElementById("progresoTexto").innerText = "¡Llenito de amor! ❤️";
+            document.getElementById("btnNextRonda2").style.display="inline-block";
+        }
     });
 
-    // --- ATRAPAR ---
+    // --- ATRAPAR (R3) ---
     const canvaC = document.getElementById("canvasCorazones"), ctxC = canvaC.getContext("2d");
     let pts=0, listaC=[];
     function spawnC() {
@@ -295,23 +258,24 @@ canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
             if(Math.random()<0.05) clouds.push({x:Math.random()*330, y:0});
             clouds.forEach((c,i)=>{ c.y+=5; cx.fillText("☁️", c.x, c.y); if(Math.hypot(player.x-c.x, player.y-c.y)<30) en=Math.max(0, en-8); });
             en+=0.3; document.getElementById("energia").innerText=`Energía: ${Math.floor(en)}%`;
-            requestAnimationFrame(loop);
+            if(document.getElementById('juego4').style.display === 'block') requestAnimationFrame(loop);
         }
         loop();
     }
 
-    // --- FUEGOS ARTIFICIALES ---
+    // --- FUEGOS ---
     function iniciarFuegos() {
         const cv=document.getElementById("canvasFuegos"), cx=cv.getContext("2d");
         let particles = [];
         function createP() {
             for(let i=0; i<30; i++) particles.push({x:175, y:150, vx:(Math.random()-0.5)*10, vy:(Math.random()-0.5)*10, c:`hsl(${Math.random()*360},100%,70%)`});
         }
-        setInterval(createP, 1000);
+        let interval = setInterval(createP, 1000);
         function loop() {
             cx.fillStyle="rgba(0,0,14,0.2)"; cx.fillRect(0,0,350,300);
             particles.forEach((p,i)=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.1; cx.fillStyle=p.c; cx.fillRect(p.x,p.y,3,3); if(p.y>300) particles.splice(i,1); });
-            requestAnimationFrame(loop);
+            if(document.getElementById('juego7').style.display === 'block') requestAnimationFrame(loop);
+            else clearInterval(interval);
         }
         loop();
     }
@@ -322,4 +286,3 @@ canvaF.addEventListener("mousemove", (e) => { if(canvaF._down) paintF(e); });
 </script>
 </body>
 </html>
-
