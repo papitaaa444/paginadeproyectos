@@ -3,127 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para mi Niño Especial ❤️</title>
+    <title>Para mi Niño Favorito ❤️</title>
     <style>
-        :root { --rosa: #FFB7C5; --rosa-fuerte: #D44D5C; --verde: #76B041; --bg: #FFF5F7; }
-        * { box-sizing: border-box; touch-action: none; font-family: 'Quicksand', sans-serif; }
+        :root { --rosa: #FFB7C5; --rosa-fuerte: #D44D5C; --verde: #95D5B2; --bg: #FFF9FA; }
+        * { box-sizing: border-box; touch-action: none; -webkit-tap-highlight-color: transparent; font-family: 'Quicksand', sans-serif; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow: hidden; }
         
         /* Lluvia constante */
-        .gota { position: fixed; top: -50px; pointer-events: none; z-index: 999; animation: caer linear forwards; }
+        .lluvia { position: fixed; top: -50px; pointer-events: none; z-index: 999; animation: caer linear forwards; }
         @keyframes caer { to { transform: translateY(110vh) rotate(360deg); } }
 
-        .pantalla { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; text-align: center; z-index: 10; overflow-y: auto; background: var(--bg); }
-        .card { background: white; padding: 20px; border-radius: 25px; border: 2px solid var(--rosa); margin: 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .btn { padding: 16px; border: none; border-radius: 50px; font-weight: bold; background: linear-gradient(135deg, var(--rosa), var(--rosa-fuerte)); color: white; margin: 10px auto; width: 85%; display: block; font-size: 16px; }
+        .pantalla { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; text-align: center; z-index: 10; background: var(--bg); overflow-y: auto; }
+        .card { background: white; padding: 20px; border-radius: 25px; border: 3px solid var(--rosa); margin: 10px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .btn { padding: 18px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; background: linear-gradient(135deg, var(--rosa), var(--rosa-fuerte)); color: white; margin: 10px auto; width: 85%; display: block; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* Tulipanes Diseño */
+        .jardin { display: flex; justify-content: center; gap: 10px; align-items: flex-end; height: 140px; margin: 15px 0; }
+        .t-flor { width: 35px; height: 45px; background: #ff8fab; border-radius: 20px 20px 5px 5px; position: relative; }
+        .t-flor::after { content:'🌸'; position: absolute; top: -10px; left: 5px; font-size: 18px; }
+        .t-tallo { width: 5px; height: 70px; background: var(--verde); border-radius: 3px; }
 
-        /* Tulipanes Artísticos */
-        .jardin { display: flex; justify-content: center; gap: 15px; align-items: flex-end; height: 150px; margin-top: 10px; }
-        .tulipan { display: flex; flex-direction: column; align-items: center; }
-        .t-flor { width: 35px; height: 45px; background: #ff8fab; border-radius: 15px 15px 5px 5px; position: relative; }
-        .t-flor::before { content:'🌸'; position: absolute; top: -10px; left: 5px; font-size: 18px; }
-        .t-tallo { width: 5px; height: 60px; background: var(--verde); border-radius: 3px; }
-
-        #popup { position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); background: white; border: 3px solid var(--rosa-fuerte); padding: 20px; border-radius: 20px; z-index: 2000; display: none; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        canvas { background: #fff; border-radius: 20px; touch-action: none; display: block; margin: 0 auto; }
+        canvas { border: 2px solid var(--rosa); border-radius: 20px; background: #fff; max-width: 100%; }
+        #msg-pop { position: fixed; top: 25%; left: 50%; transform: translate(-50%, -50%); background: white; border: 3px solid var(--rosa-fuerte); padding: 20px; border-radius: 20px; z-index: 2000; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-<div id="popup"></div>
+<div id="msg-pop"></div>
 
 <section id="p1" class="pantalla" style="display:block;">
-    <div style="margin-top:20%;">
+    <div style="margin-top:25%;">
         <h1 style="color:var(--rosa-fuerte);">Hola, mi niño ❤️</h1>
-        <div class="card"><p>He arreglado todo para que sea perfecto. ¡Disfruta tu regalo!</p></div>
-        <div style="font-size:80px; animation: pulse 2s infinite;">🤴🏻</div>
-        <button class="btn" onclick="nav('p2')">Empezar ✨</button>
+        <div class="card"><p>"He arreglado cada detalle para que hoy sea especial. ¡Te amo!"</p></div>
+        <div style="font-size:80px;">👦🏻✨</div>
+        <button class="btn" onclick="nav('p2')">Empezar el Juego ✨</button>
     </div>
 </section>
 
 <section id="p2" class="pantalla">
     <h2>Pinta mi corazón ❤️</h2>
-    <p>Pasa el dedo por todo el cuadro</p>
-    <canvas id="cvRelleno"></canvas>
-    <div id="nextR" style="display:none; margin-top:10px;"><button class="btn" onclick="nav('p3')">¡Qué lindo! Continuar ➡️</button></div>
+    <p>Usa tu dedo para colorear el cuadro</p>
+    <canvas id="cvRelleno" width="280" height="280"></canvas>
+    <div id="btnNextR" style="display:none;"><button class="btn" onclick="nav('p3')">¡Quedó hermoso! ➡️</button></div>
 </section>
 
 <section id="p3" class="pantalla" style="background:#0b132b; color:white;">
-    <h2>🌌 Trivia Estelar</h2>
+    <h2>🌌 Sabiduría Estelar</h2>
     <div class="card" style="background:rgba(255,255,255,0.1); color:white;"><p id="txtP"></p></div>
     <div id="optsP"></div>
 </section>
 
 <section id="p4" class="pantalla">
     <h2>Atrapa 10 Corazones 💗</h2>
-    <p>¡Cuidado con los rojos! ❤️</p>
-    <canvas id="cvCorazones"></canvas>
-    <h2 id="scoreC" style="color:var(--rosa-fuerte)">Puntos: 0 / 10</h2>
-    <div id="nextC" style="display:none;"><button class="btn" onclick="nav('p5')">¡Bien hecho! ➡️</button></div>
+    <p>¡No toques los rojos!</p>
+    <canvas id="cvCorazones" width="300" height="300"></canvas>
+    <h3 id="scoreC" style="color:var(--rosa-fuerte)">Puntos: 0 / 10</h3>
+    <div id="btnNextC" style="display:none;"><button class="btn" onclick="nav('p5')">¡Siguiente! ➡️</button></div>
 </section>
 
 <section id="p5" class="pantalla">
-    <h2>Adivina mi color de hoy 🎨</h2>
+    <h2>¿De qué color es mi corazón? 🎨</h2>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; padding:10px;">
-        <div onclick="clickCol('Azul')" style="background:#8ECAE6; height:80px; border-radius:15px; border:3px solid white;"></div>
-        <div onclick="clickCol('Rojo')" style="background:#ff4d6d; height:80px; border-radius:15px; border:3px solid white;"></div>
-        <div onclick="clickCol('Verde')" style="background:#95D5B2; height:80px; border-radius:15px; border:3px solid white;"></div>
-        <div onclick="clickCol('Lila')" style="background:#BDB2FF; height:80px; border-radius:15px; border:3px solid white;"></div>
+        <div onclick="clickCol('Rojo')" style="background:#ff4d6d; height:80px; border-radius:20px; border:3px solid white;"></div>
+        <div onclick="clickCol('Azul')" style="background:#8ECAE6; height:80px; border-radius:20px; border:3px solid white;"></div>
+        <div onclick="clickCol('Verde')" style="background:#95D5B2; height:80px; border-radius:20px; border:3px solid white;"></div>
+        <div onclick="clickCol('Lila')" style="background:#BDB2FF; height:80px; border-radius:20px; border:3px solid white;"></div>
     </div>
-    <div id="nextCol" style="display:none; margin-top:10px;"><button class="btn" onclick="nav('p6')">Siguiente ✨</button></div>
+    <div id="btnNextCol" style="display:none; margin-top:20px;"><button class="btn" onclick="nav('p6')">¡Ese es! Continuar</button></div>
 </section>
 
 <section id="p6" class="pantalla">
-    <h2>Trivia Especial 🏆</h2>
+    <h2>Trivia Rápida 🏆</h2>
     <div class="card"><p id="txtT" style="font-weight:bold;"></p></div>
     <div id="optsT"></div>
 </section>
 
 <section id="p7" class="pantalla">
     <h2>Laberinto del Amor 🌀</h2>
-    <p>No toques las paredes rojas o vuelves al inicio.</p>
-    <canvas id="cvLaberinto"></canvas>
+    <p>Toca la 🎁 sin chocar con lo rojo</p>
+    <canvas id="cvLaberinto" width="300" height="300"></canvas>
 </section>
 
 <section id="p8" class="pantalla" style="background:#001d3d; color:white;">
-    <h2>Energía Estelar ⭐</h2>
-    <canvas id="cvCielo"></canvas>
+    <h2>Carga la Estrella ⭐</h2>
+    <canvas id="cvCielo" width="300" height="300"></canvas>
     <div id="stCielo" style="color:var(--oro); font-size:20px;">Carga: 0%</div>
 </section>
 
 <section id="p9" class="pantalla">
-    <h2>Un jardín para mi niño 🌷</h2>
-    <div class="card" style="border:none;"><p id="txtTulip" style="color:var(--rosa-fuerte); font-weight:bold;"></p></div>
+    <h2>Un jardín para ti 🌷</h2>
+    <div class="card" style="border:none;"><p id="txtTulip" style="color:var(--rosa-fuerte); font-weight:bold; font-size:1.2em;"></p></div>
     <div class="jardin">
         <div class="tulipan"><div class="t-flor"></div><div class="t-tallo"></div></div>
         <div class="tulipan"><div class="t-flor" style="background:#fb6f92;"></div><div class="t-tallo"></div></div>
         <div class="tulipan"><div class="t-flor" style="background:#ffc2d1;"></div><div class="t-tallo"></div></div>
     </div>
-    <button class="btn" onclick="nav('p10')">Music Challenge 🎤</button>
+    <button class="btn" onclick="nav('p10')">Adivina la Canción 🎤</button>
 </section>
 
 <section id="p10" class="pantalla">
-    <h2>¿Quién canta? 🎤</h2>
-    <div class="card"><p id="artS" style="color:var(--rosa-fuerte); font-weight:bold;"></p><p id="letS"></p></div>
+    <h2>Music Challenge 🎤</h2>
+    <div class="card">
+        <p id="artS" style="font-weight:bold; color:var(--rosa-fuerte);"></p>
+        <p id="letS" style="font-style:italic; margin-top:10px;"></p>
+    </div>
     <div id="optsS"></div>
 </section>
 
-<section id="p11" class="pantalla" style="background:#000; color:white;">
-    <h2 style="color:var(--oro)">¡TERMINASTE! 🎇</h2>
-    <canvas id="cvFuegos"></canvas>
-    <div class="card" style="background:rgba(0,0,0,0.8); color:white; border:1px solid var(--oro); text-align:left; font-size:14px;">
-        <b>Mis dedicatorias:</b><br>
-        1. Ariana Grande - The Boy Is Mine<br>
-        2. Cuco - Lo Que Siento<br>
-        3. Silvio Rodríguez - Te Amaré<br>
-        4. Farruko - Obsesionado<br>
-        5. Lady Gaga - Die With A Smile
-    </div>
-    <button class="btn" onclick="nav('p12')">Leer Carta 💌</button>
-</section>
-
 <section id="p12" class="pantalla">
-    <div class="card" style="text-align:justify; line-height:1.6;">
+    <div class="card" style="text-align:justify; line-height:1.7;">
         <h3 style="color:var(--rosa-fuerte); text-align:center;">Para mi niño...</h3>
         <p>Quizá te demuestro muy poco y quizá esto no sea nada o, si lo es, no sea suficiente. No es que no quiera expresar o mostrar todo lo que siento... Me haces feliz y quiero poder hacerte igual de feliz. Gracias por estar y por aguantarme. Sé que me pongo tonta y sigo mejorando por ti para ser y poder entregarte lo mejor. ¡Muakkkk! ❤️</p>
     </div>
@@ -131,42 +119,39 @@
 </section>
 
 <script>
-// Lluvia
+// Lluvia Global
 setInterval(() => {
     const d = document.createElement('div');
-    d.innerHTML = ['🌸','💖','🌷','✨'][Math.floor(Math.random()*4)];
-    d.className = 'gota';
+    d.innerHTML = ['🌸','💖','🌹','✨'][Math.floor(Math.random()*4)];
+    d.className = 'lluvia';
     d.style.left = Math.random() * 100 + 'vw';
-    d.style.animationDuration = (Math.random()*2+2)+'s';
+    d.style.animationDuration = (Math.random()*3+2)+'s';
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 4000);
-}, 300);
+    setTimeout(() => d.remove(), 4500);
+}, 400);
 
 function nav(id) {
     document.querySelectorAll('.pantalla').forEach(p => p.style.display = 'none');
     document.getElementById(id).style.display = 'block';
     if(id==='p2') initR(); if(id==='p3') initP(); if(id==='p4') initC();
     if(id==='p6') initT(); if(id==='p7') initL(); if(id==='p8') initSky();
-    if(id==='p9') initTulip(); if(id==='p10') initS(); if(id==='p11') initF();
+    if(id==='p9') initTulip(); if(id==='p10') initS();
 }
 
-// 1. CORAZÓN (REPARADO TOTAL)
+// 1. RELLENO CORAZÓN (ESTA VEZ SÍ SE VE)
 function initR() {
-    const c=document.getElementById('cvRelleno'); c.width=250; c.height=250; const ctx=c.getContext('2d');
-    let pixels = 0;
-    ctx.strokeStyle="#FFB7C5"; ctx.lineWidth=30; ctx.lineCap="round";
-    // Dibujo del contorno del corazón para guía
-    ctx.beginPath(); ctx.moveTo(125, 80); ctx.bezierCurveTo(125, 77, 120, 60, 95, 60, 65, 60, 65, 97.5, 65, 97.5, 65, 120, 85, 142, 125, 175, 165, 142, 185, 120, 185, 97.5, 185, 97.5, 185, 60, 155, 60, 130, 60, 125, 77, 125, 80); ctx.stroke();
-
-    const draw = (e) => {
+    const c=document.getElementById('cvRelleno'); const ctx=c.getContext('2d');
+    let pts = 0;
+    const pintar = (e) => {
         const rect = c.getBoundingClientRect();
         const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
         const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-        ctx.fillStyle = "#FFB7C5";
-        ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
-        pixels++; if(pixels > 80) document.getElementById('nextR').style.display='block';
+        ctx.fillStyle = "#FF4D6D"; // Rojo fuerte para que se vea el trazo
+        ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI*2); ctx.fill();
+        pts++; if(pts > 50) document.getElementById('btnNextR').style.display='block';
     };
-    c.ontouchmove = (e) => { e.preventDefault(); draw(e); };
+    c.ontouchmove = (e) => { e.preventDefault(); pintar(e); };
+    c.onmousemove = (e) => { if(e.buttons==1) pintar(e); };
 }
 
 // 2. PRINCIPITO
@@ -178,31 +163,31 @@ function initP(){
 }
 window.checkP=(n)=>{if(n===pF[pIdx].a){pIdx++; if(pIdx<pF.length) initP(); else nav('p4');}};
 
-// 3. CORAZONES (REPARADO)
+// 3. CORAZONES
 function initC(){
-    const c=document.getElementById('cvCorazones'); c.width=280; c.height=280; const ctx=c.getContext('2d');
-    let pts=0, it=[]; for(let i=0;i<10;i++) it.push({x:Math.random()*250, y:Math.random()*250, t:Math.random()>0.3?'💗':'❤️'});
+    const c=document.getElementById('cvCorazones'); const ctx=c.getContext('2d');
+    let pts=0, it=[]; for(let i=0;i<8;i++) it.push({x:Math.random()*260, y:Math.random()*260, t:Math.random()>0.3?'💗':'❤️'});
     function loop(){
-        ctx.clearRect(0,0,280,280);
-        it.forEach(i=>{ ctx.font="30px Arial"; ctx.fillText(i.t, i.x, i.y); i.y += 2; if(i.y>300) {i.y=-20; i.x=Math.random()*250;} });
+        ctx.clearRect(0,0,300,300);
+        it.forEach(i=>{ ctx.font="30px Arial"; ctx.fillText(i.t, i.x, i.y); i.y += 2.5; if(i.y>320){i.y=-20; i.x=Math.random()*260;} });
         if(pts<10) requestAnimationFrame(loop);
     }
     c.ontouchstart=(e)=>{
-        const rect=c.getBoundingClientRect(); const tx=e.touches[0].clientX-rect.left, ty=e.touches[0].clientY-rect.top;
-        it.forEach(i=>{ if(Math.hypot(i.x-tx, i.y-ty)<40){ i.y=-50; if(i.t==='💗') pts++; else pts=Math.max(0, pts-1); 
-        document.getElementById('scoreC').innerText=`Puntos: ${pts}/10`; if(pts>=10) document.getElementById('nextC').style.display='block'; } });
+        const r=c.getBoundingClientRect(); const tx=e.touches[0].clientX-r.left, ty=e.touches[0].clientY-r.top;
+        it.forEach(i=>{ if(Math.hypot(i.x-tx, i.y-ty)<45){ i.y=-100; if(i.t==='💗') pts++; else pts=Math.max(0, pts-1); 
+        document.getElementById('scoreC').innerText=`Puntos: ${pts}/10`; if(pts>=10) document.getElementById('btnNextC').style.display='block'; } });
     }; loop();
 }
 
 // 4. COLOR
 window.clickCol=(c)=>{
-    const p=document.getElementById('popup');
-    if(c==='Azul'){ p.innerHTML="<h3>¡Sí! 💙</h3><p>El azul de nuestra paz.</p>"; p.style.display='block'; document.getElementById('nextCol').style.display='block'; }
-    else { p.innerHTML="<h3>Mmm... casi 🌸</h3><p>Pero mi corazón hoy es rosado.</p>"; p.style.display='block'; setTimeout(()=>p.style.display='none', 2000); }
+    const p=document.getElementById('msg-pop');
+    if(c==='Azul'){ p.innerHTML="<h3>¡Exacto! 💙</h3><p>Mi azul favorito.</p>"; p.style.display='block'; document.getElementById('btnNextCol').style.display='block'; }
+    else { p.innerHTML="<h3>¡Mmm no! 🌸</h3><p>Hoy mi corazón es Rosado...</p>"; p.style.display='block'; setTimeout(()=>p.style.display='none', 2000); }
 }
 
 // 5. TRIVIA
-let tIdx=0; const tF=[{q:"¿Color de las hojas en otoño?", a:"Café", o:["Azul","Verde"]}, {q:"¿Quién es el más especial?", a:"Yo", o:["Tú","Nadie"]}];
+let tIdx=0; const tF=[{q:"¿De qué color es el Sol?", a:"Amarillo", o:["Verde","Azul"]}, {q:"¿Quién es el más especial?", a:"Yo", o:["Tú","Nadie"]}];
 function initT(){
     const t=tF[tIdx]; document.getElementById('txtT').innerText=t.q;
     let o=[t.a, ...t.o].sort(()=>Math.random()-0.5);
@@ -210,29 +195,29 @@ function initT(){
 }
 window.checkT=(n)=>{if(n===tF[tIdx].a){tIdx++; if(tIdx<tF.length) initT(); else nav('p7');}};
 
-// 6. LABERINTO
+// 6. LABERINTO (REINICIO SI CHOCAS)
 function initL(){
-    const c=document.getElementById('cvLaberinto'); c.width=280; c.height=280; const ctx=c.getContext('2d');
-    let x=20, y=20; const muros=[{x:0,y:80,w:200,h:20}, {x:80,y:180,w:200,h:20}];
+    const c=document.getElementById('cvLaberinto'); const ctx=c.getContext('2d');
+    let x=25, y=25; const muros=[{x:0,y:80,w:220,h:20}, {x:80,y:180,w:220,h:20}];
     function draw(){
-        ctx.clearRect(0,0,280,280); ctx.fillStyle="red"; muros.forEach(m=>ctx.fillRect(m.x,m.y,m.w,m.h));
-        ctx.font="25px Arial"; ctx.fillText("👦🏻", x-10, y+10); ctx.fillText("🎁", 240, 260);
+        ctx.clearRect(0,0,300,300); ctx.fillStyle="red"; muros.forEach(m=>ctx.fillRect(m.x,m.y,m.w,m.h));
+        ctx.font="30px Arial"; ctx.fillText("👦🏻", x-15, y+10); ctx.fillText("🎁", 250, 270);
     }
     c.ontouchmove=(e)=>{
         e.preventDefault(); const r=c.getBoundingClientRect(); let nx=e.touches[0].clientX-r.left, ny=e.touches[0].clientY-r.top;
-        if(muros.some(m=>nx>m.x && nx<m.x+m.w && ny>m.y-5 && ny<m.y+m.h)){ x=20; y=20; } else { x=nx; y=ny; }
-        if(x>240 && y>240) nav('p8'); draw();
+        if(muros.some(m=>nx>m.x && nx<m.x+m.w && ny>m.y-5 && ny<m.y+m.h)){ x=25; y=25; } else { x=nx; y=ny; }
+        if(x>250 && y>250) nav('p8'); draw();
     }; draw();
 }
 
 // 7. CIELO
 function initSky(){
-    const c=document.getElementById('cvCielo'); c.width=280; c.height=280; const ctx=c.getContext('2d');
-    let x=140, ch=0;
+    const c=document.getElementById('cvCielo'); const ctx=c.getContext('2d');
+    let x=150, ch=0;
     c.ontouchmove=(e)=>{ x=e.touches[0].clientX-c.getBoundingClientRect().left; };
     function loop(){
-        ctx.fillStyle="#001d3d"; ctx.fillRect(0,0,280,280); ctx.font="40px Arial"; ctx.fillText("⭐", x-20, 260);
-        ch+=0.3; document.getElementById('stCielo').innerText=`Carga: ${Math.floor(ch)}%`;
+        ctx.fillStyle="#001d3d"; ctx.fillRect(0,0,300,300); ctx.font="40px Arial"; ctx.fillText("⭐", x-20, 270);
+        ch+=0.4; document.getElementById('stCielo').innerText=`Carga: ${Math.floor(ch)}%`;
         if(ch<100) requestAnimationFrame(loop); else nav('p9');
     } loop();
 }
@@ -243,31 +228,20 @@ function initTulip(){
     let i=0; setInterval(()=>{document.getElementById('txtTulip').innerText=f[i%f.length]; i++;}, 2000);
 }
 
-// 9. MUSIC (5 CANCIONES)
+// 9. MUSIC CHALLENGE (5 CANCIONES COMPLETAS)
 let sIdx=0; const sF=[
     {a:"Ariana Grande", l:"Can you stay up all night?...", r:"til the daylight"},
     {a:"Cuco", l:"Lo que siento por ti...", r:"is real"},
-    {a:"Silvio Rodríguez", l:"Te amaré, te amaré...", r:"como a mi vida"},
-    {a:"Farruko", l:"Obsesionado con tu...", r:"piel"},
-    {a:"Lady Gaga", l:"Die with a...", r:"smile"}
+    {a:"Silvio Rodríguez", l:"Te amaré, te amaré como a...", r:"mi propia vida"},
+    {a:"Farruko", l:"Yo sigo aquí obsesionado...", r:"con tu piel"},
+    {a:"Lady Gaga", l:"If the world was ending...", r:"I'd wanna be next to you"}
 ];
 function initS(){
-    const s=sF[sIdx]; document.getElementById('artS').innerText=s.a; document.getElementById('letS').innerText=s.l;
+    const s=sF[sIdx]; document.getElementById('artS').innerText=s.a; document.getElementById('letS').innerText=`"${s.l}"`;
     let o=[s.r, "forever", "today"].sort(()=>Math.random()-0.5);
     document.getElementById('optsS').innerHTML=o.map(n=>`<button class="btn" onclick="checkS('${n}')">${n}</button>`).join('');
 }
-window.checkS=(n)=>{if(n===sF[sIdx].r){sIdx++; if(sIdx<sF.length) initS(); else nav('p11');}};
-
-// 10. FUEGOS
-function initF(){
-    const c=document.getElementById('cvFuegos'); c.width=300; c.height=200; const ctx=c.getContext('2d');
-    function loop(){
-        ctx.fillStyle="rgba(0,0,0,0.1)"; ctx.fillRect(0,0,300,200);
-        ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
-        ctx.fillRect(Math.random()*300, Math.random()*200, 3, 3);
-        requestAnimationFrame(loop);
-    } loop();
-}
+window.checkS=(n)=>{if(n===sF[sIdx].r){sIdx++; if(sIdx<sF.length) initS(); else nav('p12');}};
 </script>
 </body>
 </html>
